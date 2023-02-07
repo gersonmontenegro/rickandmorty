@@ -57,4 +57,4 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
  ![First pagination](https://i.ibb.co/wcLL5yT/firstloadandpagination.gif)
  
  - v0.0.2. Grid layout was added, and footer data is on the screen now.
- ![enter image description here](https://i.ibb.co/Y8kN9bP/footer-data.png)
+ ![Grid layout](https://i.ibb.co/Y8kN9bP/footer-data.png)

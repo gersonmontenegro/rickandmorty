@@ -1,12 +1,31 @@
-import React, {memo} from 'react';
-import {Dimensions, Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {memo, useState} from 'react';
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  type ImageSourcePropType,
+} from 'react-native';
 import {useSearchWithPagination} from './hooks/use-search-with-pagination';
 import {Button} from '@rneui/themed';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {FlatGrid} from 'react-native-super-grid';
+import DropDownPicker from 'react-native-dropdown-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {Image} from '@rneui/base';
+import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {HeaderImage} from '../../assets/images';
 
 const CARD_WIDTH = 170;
 const CARD_HEIGHT = 85;
+
+const itemsList = [
+  {label: 'Characters', value: 'characters'},
+  {label: 'Locations', value: 'locations'},
+  {label: 'Episodes', value: 'episodes'},
+];
 
 const HomeComponent = (): JSX.Element => {
   const {
@@ -19,11 +38,45 @@ const HomeComponent = (): JSX.Element => {
     episodes,
     characters,
   } = useSearchWithPagination();
-  console.log(results);
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('characters');
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <Text>Home!!</Text>
+        <View style={styles.topBarContainer}>
+          <Pressable style={styles.topBarButton}>
+            <Text style={styles.topBarButtonText}>All episodes</Text>
+          </Pressable>
+          <Pressable style={styles.topBarButton}>
+            <Text style={styles.topBarButtonText}>All locations</Text>
+          </Pressable>
+        </View>
+        <View>
+          <Image
+            source={HeaderImage as ImageSourcePropType}
+            style={{width: scale(350), height: verticalScale(130), padding: moderateScale(5)}}
+          />
+        </View>
+        <View style={styles.headercontianer}>
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={itemsList}
+            setOpen={setOpen}
+            setValue={setValue}
+            style={{width: 140, backgroundColor: 'transparent', borderColor: 'transparent'}}
+            containerStyle={{backgroundColor: 'transparent', width: 140}}
+            textStyle={{color: 'white'}}
+          />
+          <TextInput
+            placeholder="Type to search"
+            style={styles.searchInput}
+            placeholderTextColor="lightgray"
+          />
+          <Icon name="search" size={20} color="#ffff" style={styles.searchIcon} />
+        </View>
         <View>
           <FlatGrid
             data={results}
@@ -55,7 +108,7 @@ const HomeComponent = (): JSX.Element => {
           />
         </View>
       </View>
-      <View>
+      <View style={styles.footerContainer}>
         <Text>{`Locations: ${locations}`}</Text>
         <Text>{`Characters: ${characters}`}</Text>
         <Text>{`Episodes: ${episodes}`}</Text>
@@ -75,7 +128,8 @@ const styles = StyleSheet.create({
   gridView: {
     marginTop: 10,
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - 200,
+    height: verticalScale(380),
+    // height: Dimensions.get('window').height - 200,
   },
   itemContainer: {
     justifyContent: 'flex-end',
@@ -84,6 +138,42 @@ const styles = StyleSheet.create({
     padding: 10,
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
+  },
+  headercontianer: {
+    flexDirection: 'row',
+    height: 40,
+    zIndex: 10000,
+    backgroundColor: '#292929',
+    marginHorizontal: 10,
+    borderRadius: 20,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  searchInput: {
+    flex: 1,
+    height: 30,
+    marginHorizontal: 10,
+    justifyContent: 'center',
+  },
+  searchIcon: {
+    right: 10,
+  },
+  topBarContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    backgroundColor: 'black',
+  },
+  topBarButton: {
+    marginHorizontal: 5,
+    height: 30,
+    justifyContent: 'center',
+  },
+  topBarButtonText: {
+    color: 'white',
+  },
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });
 

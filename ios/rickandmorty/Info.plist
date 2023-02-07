@@ -6,6 +6,11 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>rickandmorty</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>FontAwesome.ttf</string>
+		<string>Ionicons.tts</string>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
