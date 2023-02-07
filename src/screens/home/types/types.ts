@@ -41,12 +41,12 @@ export interface Results {
 export interface useSearchWithPaginationType {
   results: ResultItem[];
   loading: boolean;
-  error: string;
+  error: string | null;
   handleNextPage: () => void;
   handlePrevPage: () => void;
-  searchCharacters: (query: string, page: number) => void;
-  searchEpisodes: (query: string, page: number) => void;
-  searchLocations: (query: string, page: number) => void;
+  searchCharacters: (query: string) => void;
+  searchEpisodes: (query: string) => void;
+  searchLocations: (query: string) => void;
   totalPages: number;
   currentPage: number;
   locations: number;

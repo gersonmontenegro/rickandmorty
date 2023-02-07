@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+import axios from 'axios';
 import {useState, useEffect} from 'react';
+import {Helpers} from '../../../utils/Helpers';
 import {
   type Pagination,
   type ResultItem,
@@ -12,7 +14,7 @@ const EPISODES_URL = 'https://rickandmortyapi.com/api/episode';
 const CHARACTERS_URL = 'https://rickandmortyapi.com/api/character';
 
 const useSearchWithPagination = (): useSearchWithPaginationType => {
-  const [results, setResults] = useState<ResultItem[]>([]);
+  const [searchResults, setSearchResults] = useState<ResultItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState<Pagination>({nextPage: '', prevPage: ''});
@@ -20,7 +22,6 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
   const [entity, setEntity] = useState<string>('characters');
   const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<string>('');
-  const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [locations, setLocations] = useState<number>(0);
   const [characters, setCharacters] = useState<number>(0);
@@ -72,80 +73,67 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
     setLoading(true);
     setError(null);
 
-    let endpoint;
-    switch (entity) {
-      case 'characters':
-        endpoint = `https://rickandmortyapi.com/api/character/?name=${query}&page=${page}`;
-        break;
-      case 'episodes':
-        endpoint = `https://rickandmortyapi.com/api/episode/?name=${query}&page=${page}`;
-        break;
-      case 'locations':
-        endpoint = `https://rickandmortyapi.com/api/location/?name=${query}&page=${page}`;
-        break;
-      default:
-        endpoint = `https://rickandmortyapi.com/api/character/?name=${query}&page=${page}`;
-    }
+    const endpoint = `https://rickandmortyapi.com/api/${entity}/?name=${query}&page=${page}`;
 
     const setNewCurrentPage = (prevPage: number): void => {
       setCurrentPage(prevPage + 1);
     };
-
-    fetch(endpoint)
-      .then(async (res) => await res.json())
-      .then((data: Results) => {
-        setResults(data.results);
-        const prevPage = getLastNumber(data.info.prev);
+    void axios
+      .get(endpoint)
+      .then((response) => {
+        const results = response.data as Results;
+        setSearchResults(results.results);
+        const prevPage = getLastNumber(results.info.prev);
         setNewCurrentPage(Number(prevPage));
         setPagination({
-          nextPage: data.info.next,
-          prevPage: data.info.prev,
+          nextPage: results.info.next,
+          prevPage: results.info.prev,
         });
-        setTotalPages(data.info.pages);
-        // setTotalPages(Math.ceil(data.info.count / pageSize));
+        setTotalPages(results.info.pages);
         setLoading(false);
       })
       .catch((queryError) => {
+        console.log('queryError:', queryError);
         setError(queryError as string);
         setLoading(false);
       });
-  }, [entity, page, pageSize, query]);
+  }, [entity, page, query]);
 
   const handleNextPage = (): void => {
-    const pageToGo = getLastNumber(pagination.nextPage);
+    const pageToGo = Helpers.getURLParams(pagination.nextPage).page;
+    console.log('pageToGo:_', pageToGo);
     if (pageToGo !== '') {
       setPage(pageToGo);
     }
   };
 
   const handlePrevPage = (): void => {
-    const pageToGo = getLastNumber(pagination.prevPage);
+    const pageToGo = Helpers.getURLParams(pagination.prevPage).page;
     if (pageToGo !== '') {
-      console.log('go to', pageToGo);
       setPage(pageToGo);
     }
   };
 
-  const searchCharacters = (queryParameter: string, page) => {
-    setEntity('characters');
+  const searchCharacters = (queryParameter: string): void => {
+    setEntity('character');
     setQuery(queryParameter);
-    setPage(page);
+    setPage('0');
   };
 
-  const searchEpisodes = (queryParameter: string, page) => {
-    setEntity('episodes');
+  const searchEpisodes = (queryParameter: string): void => {
+    setEntity('episode');
     setQuery(queryParameter);
-    setPage(page);
+    setPage('0');
   };
 
-  const searchLocations = (query, page) => {
-    setEntity('locations');
-    setQuery(query);
-    setPage(page);
+  const searchLocations = (queryParameter: string): void => {
+    setEntity('location');
+    setQuery(queryParameter);
+    setPage('0');
   };
 
   return {
-    results,
+    results: searchResults,
     loading,
     error,
     handleNextPage,

@@ -22,9 +22,9 @@ const CARD_WIDTH = 170;
 const CARD_HEIGHT = 85;
 
 const itemsList = [
-  {label: 'Characters', value: 'characters'},
-  {label: 'Locations', value: 'locations'},
-  {label: 'Episodes', value: 'episodes'},
+  {label: 'Characters', value: 'character'},
+  {label: 'Locations', value: 'location'},
+  {label: 'Episodes', value: 'episode'},
 ];
 
 const HomeComponent = (): JSX.Element => {
@@ -32,6 +32,9 @@ const HomeComponent = (): JSX.Element => {
     results,
     handleNextPage,
     handlePrevPage,
+    searchCharacters,
+    searchEpisodes,
+    searchLocations,
     totalPages,
     currentPage,
     locations,
@@ -39,8 +42,9 @@ const HomeComponent = (): JSX.Element => {
     characters,
   } = useSearchWithPagination();
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('characters');
+  const [open, setOpen] = useState<boolean>(false);
+  const [value, setValue] = useState<string>('character');
+  const [searchInputValue, setSearchInputValue] = useState<string>('');
 
   return (
     <SafeAreaView>
@@ -71,15 +75,40 @@ const HomeComponent = (): JSX.Element => {
             textStyle={{color: 'white'}}
           />
           <TextInput
+            value={searchInputValue}
+            onChangeText={(text: string) => {
+              setSearchInputValue(text);
+            }}
             placeholder="Type to search"
             style={styles.searchInput}
             placeholderTextColor="lightgray"
           />
-          <Icon name="search" size={20} color="#ffff" style={styles.searchIcon} />
+          <Pressable
+            onPress={() => {
+              switch (value) {
+                case 'character': {
+                  searchCharacters(searchInputValue);
+                  break;
+                }
+                case 'episode': {
+                  searchEpisodes(searchInputValue);
+                  break;
+                }
+                case 'location': {
+                  searchLocations(searchInputValue);
+                  break;
+                }
+                default: {
+                  searchCharacters(searchInputValue);
+                }
+              }
+            }}>
+            <Icon name="search" size={20} color="#ffff" style={styles.searchIcon} />
+          </Pressable>
         </View>
         <View>
           <FlatGrid
-            data={results}
+            data={results ?? []}
             style={styles.gridView}
             renderItem={({item}) => {
               return (
@@ -154,6 +183,7 @@ const styles = StyleSheet.create({
     height: 30,
     marginHorizontal: 10,
     justifyContent: 'center',
+    color: 'white',
   },
   searchIcon: {
     right: 10,
@@ -170,6 +200,9 @@ const styles = StyleSheet.create({
   },
   topBarButtonText: {
     color: 'white',
+    fontFamily: 'Verdana',
+    fontWeight: 'bold',
+    fontSize: 12,
   },
   footerContainer: {
     flexDirection: 'row',
