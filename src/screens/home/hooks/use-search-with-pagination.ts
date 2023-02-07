@@ -27,19 +27,6 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
   const [characters, setCharacters] = useState<number>(0);
   const [episodes, setEpisodes] = useState<number>(0);
 
-  const getLastNumber = (url: string): string => {
-    if (url === null) {
-      return '';
-    }
-    const regex = /\d+$/;
-    const result = url.match(regex);
-    if (result !== null) {
-      return result[0];
-    } else {
-      return '';
-    }
-  };
-
   useEffect(() => {
     fetch(LOCATIONS_URL)
       .then(async (res) => await res.json())
@@ -69,22 +56,33 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
       });
   }, []);
 
+  const setNewCurrentPage = (prevPage: number, nextPage: number): void => {
+    if (prevPage === 0 && nextPage === 0) {
+      setCurrentPage(1);
+    } else if (prevPage === 0 || isNaN(prevPage)) {
+      setCurrentPage(1);
+    } else if (nextPage === 0 || isNaN(nextPage)) {
+      setCurrentPage(prevPage + 1);
+    } else if (prevPage > 0 && nextPage > 0) {
+      setCurrentPage(prevPage + 1);
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     setError(null);
 
     const endpoint = `https://rickandmortyapi.com/api/${entity}/?name=${query}&page=${page}`;
 
-    const setNewCurrentPage = (prevPage: number): void => {
-      setCurrentPage(prevPage + 1);
-    };
     void axios
       .get(endpoint)
       .then((response) => {
         const results = response.data as Results;
         setSearchResults(results.results);
-        const prevPage = getLastNumber(results.info.prev);
-        setNewCurrentPage(Number(prevPage));
+        setNewCurrentPage(
+          Number(Helpers.getURLParams(results.info.prev).page) ?? 0,
+          Number(Helpers.getURLParams(results.info.next).page) ?? 0,
+        );
         setPagination({
           nextPage: results.info.next,
           prevPage: results.info.prev,
@@ -93,7 +91,6 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
         setLoading(false);
       })
       .catch((queryError) => {
-        console.log('queryError:', queryError);
         setError(queryError as string);
         setLoading(false);
       });
@@ -101,7 +98,6 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
 
   const handleNextPage = (): void => {
     const pageToGo = Helpers.getURLParams(pagination.nextPage).page;
-    console.log('pageToGo:_', pageToGo);
     if (pageToGo !== '') {
       setPage(pageToGo);
     }

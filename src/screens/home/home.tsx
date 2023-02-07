@@ -72,6 +72,8 @@ const HomeComponent = (): JSX.Element => {
             setValue={setValue}
             style={{width: 140, backgroundColor: 'transparent', borderColor: 'transparent'}}
             containerStyle={{backgroundColor: 'transparent', width: 140}}
+            listItemLabelStyle={{color: 'white'}}
+            listItemContainerStyle={{backgroundColor: '#292929'}}
             textStyle={{color: 'white'}}
           />
           <TextInput
