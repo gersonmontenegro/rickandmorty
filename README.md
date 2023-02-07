@@ -50,3 +50,14 @@ There are several stages required to completed this project:
 Seems easy, but is not. There are a ton of details that weren't take into account, such as libraries, tools, and project setup, which are completely necessary to make our life easier.
 
 Tools like linters, and alias resolver could help a lot. Also to define codification styles, folder structure, git flow, etc, but this time some of them could be avoided.
+
+**Changelog**
+
+ - v0.0.1. Initial setup was made (including ESLint, Prettier, and, of course, Git). Also basic connection was made and first pagination is working as expected. However, I realized the API doesn't support page size, or at least I haven't seen that so far. That means we need to continue with other features meanwhile a solution is found if possible.
+ ![First pagination](https://i.ibb.co/wcLL5yT/firstloadandpagination.gif)
+ 
+ - v0.0.2. Grid layout was added, and footer data is on the screen now.
+ ![Grid layout](https://i.ibb.co/Y8kN9bP/footer-data.png)
+
+ - v0.1.0. First layout version was added. At this point this project started to looks like the final version, but there is still a lot of details to add.
+ ![enter image description here](https://i.ibb.co/LP4G0V8/basiclayout.png)
