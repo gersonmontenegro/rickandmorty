@@ -58,3 +58,6 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
  
  - v0.0.2. Grid layout was added, and footer data is on the screen now.
  ![Grid layout](https://i.ibb.co/Y8kN9bP/footer-data.png)
+
+ - v0.1.0. First layout version was added. At this point this project started to looks like the final version, but there is still a lot of details to add.
+ ![enter image description here](https://i.ibb.co/LP4G0V8/basiclayout.png)
