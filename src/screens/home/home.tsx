@@ -46,14 +46,26 @@ const HomeComponent = (): JSX.Element => {
   const [value, setValue] = useState<string>('character');
   const [searchInputValue, setSearchInputValue] = useState<string>('');
 
+  // const renderItem = useCallback(() => {
+
+  // }, []);
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
         <View style={styles.topBarContainer}>
-          <Pressable style={styles.topBarButton}>
+          <Pressable
+            style={styles.topBarButton}
+            onPress={() => {
+              searchEpisodes('');
+            }}>
             <Text style={styles.topBarButtonText}>All episodes</Text>
           </Pressable>
-          <Pressable style={styles.topBarButton}>
+          <Pressable
+            style={styles.topBarButton}
+            onPress={() => {
+              searchLocations('');
+            }}>
             <Text style={styles.topBarButtonText}>All locations</Text>
           </Pressable>
         </View>
