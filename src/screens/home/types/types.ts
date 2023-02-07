@@ -48,6 +48,10 @@ export interface useSearchWithPaginationType {
   searchEpisodes: (query: string, page: number) => void;
   searchLocations: (query: string, page: number) => void;
   totalPages: number;
+  currentPage: number;
+  locations: number;
+  episodes: number;
+  characters: number;
 }
 
 export interface Pagination {

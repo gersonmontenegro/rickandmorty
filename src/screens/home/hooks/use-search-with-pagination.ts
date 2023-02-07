@@ -7,6 +7,10 @@ import {
   type useSearchWithPaginationType,
 } from '../types/types';
 
+const LOCATIONS_URL = 'https://rickandmortyapi.com/api/location';
+const EPISODES_URL = 'https://rickandmortyapi.com/api/episode';
+const CHARACTERS_URL = 'https://rickandmortyapi.com/api/character';
+
 const useSearchWithPagination = (): useSearchWithPaginationType => {
   const [results, setResults] = useState<ResultItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -18,6 +22,9 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
   const [page, setPage] = useState<string>('');
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const [locations, setLocations] = useState<number>(0);
+  const [characters, setCharacters] = useState<number>(0);
+  const [episodes, setEpisodes] = useState<number>(0);
 
   const getLastNumber = (url: string): string => {
     if (url === null) {
@@ -31,6 +38,35 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
       return '';
     }
   };
+
+  useEffect(() => {
+    fetch(LOCATIONS_URL)
+      .then(async (res) => await res.json())
+      .then((data: Results) => {
+        setLocations(data.info.count);
+      })
+      .catch((errorMessage) => {
+        setError(errorMessage as string);
+      });
+
+    fetch(EPISODES_URL)
+      .then(async (res) => await res.json())
+      .then((data: Results) => {
+        setEpisodes(data.info.count);
+      })
+      .catch((errorMessage) => {
+        setError(errorMessage as string);
+      });
+
+    fetch(CHARACTERS_URL)
+      .then(async (res) => await res.json())
+      .then((data: Results) => {
+        setCharacters(data.info.count);
+      })
+      .catch((errorMessage) => {
+        setError(errorMessage as string);
+      });
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -119,6 +155,9 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
     searchLocations,
     totalPages,
     currentPage,
+    locations,
+    episodes,
+    characters,
   };
 };
 
