@@ -76,13 +76,17 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
 **Changelog**
 
  - v0.0.1. Initial setup was made (including ESLint, Prettier, and, of course, Git). Also basic connection was made and first pagination is working as expected. However, I realized the API doesn't support page size, or at least I haven't seen that so far. That means we need to continue with other features meanwhile a solution is found if possible.
- ![First pagination](https://i.ibb.co/wcLL5yT/firstloadandpagination.gif)
+
+![First pagination](https://i.ibb.co/wcLL5yT/firstloadandpagination.gif)
  
  - v0.0.2. Grid layout was added, and footer data is on the screen now.
- ![First layout](https://i.ibb.co/Y8kN9bP/footer-data.png)
+
+![First layout](https://i.ibb.co/Y8kN9bP/footer-data.png)
  
  - v0.1.0. First layout version was added. At this point this project started to looks like the final version, but there is still a lot of details to add.
- ![Testing pagination](https://i.ibb.co/LP4G0V8/basiclayout.png)
+
+![Testing pagination](https://i.ibb.co/LP4G0V8/basiclayout.png)
 
  - v0.1.1. Search is now working by categories as expected. Pagination works pretty fine, and we are about to finish functionalities to start working on UI styles.
+
 ![Search by categories](https://i.ibb.co/x7H4fZW/search-by-categories.gif)
