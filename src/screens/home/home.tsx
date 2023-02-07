@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {
   Dimensions,
   Pressable,
@@ -17,9 +17,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Image} from '@rneui/base';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {HeaderImage} from '../../assets/images';
-
-const CARD_WIDTH = 170;
-const CARD_HEIGHT = 85;
+import {type ResultItem} from './types/types';
+import {ListItem} from './components/list-item';
 
 const itemsList = [
   {label: 'Characters', value: 'character'},
@@ -46,9 +45,10 @@ const HomeComponent = (): JSX.Element => {
   const [value, setValue] = useState<string>('character');
   const [searchInputValue, setSearchInputValue] = useState<string>('');
 
-  // const renderItem = useCallback(() => {
-
-  // }, []);
+  const renderListItem = useCallback(
+    ({item}: {item: ResultItem}) => <ListItem item={item} key={item.id} />,
+    [],
+  );
 
   return (
     <SafeAreaView>
@@ -121,21 +121,7 @@ const HomeComponent = (): JSX.Element => {
           </Pressable>
         </View>
         <View>
-          <FlatGrid
-            data={results ?? []}
-            style={styles.gridView}
-            renderItem={({item}) => {
-              return (
-                <Pressable
-                  style={styles.itemContainer}
-                  onPress={() => {
-                    console.log(item.name);
-                  }}>
-                  <Text>Name: {item.name}</Text>
-                </Pressable>
-              );
-            }}
-          />
+          <FlatGrid data={results ?? []} style={styles.gridView} renderItem={renderListItem} />
         </View>
         <View style={{flexDirection: 'row'}}>
           <Button
@@ -172,15 +158,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: Dimensions.get('window').width,
     height: verticalScale(380),
-    // height: Dimensions.get('window').height - 200,
-  },
-  itemContainer: {
-    justifyContent: 'flex-end',
-    backgroundColor: 'gray',
-    borderRadius: 5,
-    padding: 10,
-    height: CARD_HEIGHT,
-    width: CARD_WIDTH,
+    backgroundColor: '#333333',
   },
   headercontianer: {
     flexDirection: 'row',

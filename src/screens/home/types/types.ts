@@ -58,3 +58,7 @@ export interface Pagination {
   nextPage: string;
   prevPage: string;
 }
+
+export interface useListItemType {
+  firstSeen: string;
+}
