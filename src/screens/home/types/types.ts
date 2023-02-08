@@ -14,7 +14,7 @@ export interface ResultsInfo {
 
 export interface ResultItem {
   created: string;
-  episode: [string];
+  episodes: [string];
   gender: string;
   id: number;
   image: string;
@@ -31,6 +31,9 @@ export interface ResultItem {
   status: string;
   type: string;
   url: string;
+  air_date?: string;
+  episode?: string;
+  dimension?: string;
 }
 
 export interface Results {
@@ -67,6 +70,10 @@ export interface DetailsModalProps {
   itemDetails: ResultItem | null;
   visible: boolean;
   setVisible: (value: boolean) => void;
+}
+
+export interface CardDetailsProps {
+  itemDetails: ResultItem | null;
 }
 
 export interface DetailProps {

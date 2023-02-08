@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, Modal, View, ImageBackground} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {scale, verticalScale} from 'react-native-size-matters';
@@ -7,22 +7,14 @@ import {Hero} from '../../../assets/images';
 import {type DetailsModalProps} from '../types/types';
 import LinearGradient from 'react-native-linear-gradient';
 import {GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '../constants';
-import {Detail} from './detail';
 import {Text} from 'react-native-paper';
+import {CardDetails} from './card-details';
 
 const DetailsModalComponent = ({
   visible,
   setVisible,
   itemDetails,
 }: DetailsModalProps): JSX.Element => {
-  const [episodes, setEpisodes] = useState<string | undefined>('');
-  const getLastNumber = (url: string): string => (url !== null ? url.match(/\d+$/)[0] : '');
-
-  useEffect(() => {
-    const episodesList = itemDetails?.episode.map((item) => getLastNumber(item));
-    setEpisodes(episodesList?.join(','));
-  }, [itemDetails?.episode]);
-
   return (
     <Modal
       animationType="slide"
@@ -46,19 +38,7 @@ const DetailsModalComponent = ({
               />
             </FastImage>
             <View style={styles.rightColumn}>
-              <View style={styles.detailsContainer}>
-                <View>
-                  <Detail title="Name" description={itemDetails?.name} />
-                  <Detail title="Status" description={itemDetails?.status} />
-                  <Detail title="Species" description={itemDetails?.species} />
-                  <Detail title="Gender" description={itemDetails?.gender} />
-                </View>
-                <View>
-                  <Detail title="Origin" description={itemDetails?.origin.name} />
-                  <Detail title="Location" description={itemDetails?.location.name} />
-                  <Detail title="Episodes" description={episodes} />
-                </View>
-              </View>
+              <CardDetails itemDetails={itemDetails} />
             </View>
           </View>
         </View>
@@ -103,10 +83,6 @@ const styles = StyleSheet.create({
   rightColumn: {
     flex: 2,
     justifyContent: 'center',
-  },
-  detailsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
   },
   grayBackground: {
     backgroundColor: '#282828',

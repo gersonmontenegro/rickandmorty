@@ -8,4 +8,6 @@ export const Helpers = {
     }
     return params;
   },
+
+  getLastNumber: (url: string): string => (url !== null ? url.match(/\d+$/)[0] : ''),
 };

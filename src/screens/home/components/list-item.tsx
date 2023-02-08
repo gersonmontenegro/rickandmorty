@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import {isEmpty} from 'lodash';
 import React, {memo} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {CARD_HEIGHT, CARD_WIDTH} from '../constants';
-import {useListItem} from '../hooks/use-list-item';
 import {type ResultItem} from '../types/types';
+import {CardDetail} from './card-detail';
+import {FirstSeen} from './first-seen';
 
 const ListItemComponent = ({
   item,
@@ -15,8 +18,6 @@ const ListItemComponent = ({
   setItemDetails: (value: ResultItem) => void;
   setModalVisible: (value: boolean) => void;
 }): JSX.Element => {
-  const {firstSeen} = useListItem(item.episode[0]);
-
   return (
     <Pressable
       style={styles.itemContainer}
@@ -35,14 +36,10 @@ const ListItemComponent = ({
             <Text style={styles.status}>{`${item.status} - ${item.species}`}</Text>
           </View>
         </View>
-        <View>
-          <Text style={styles.title}>Last know location</Text>
-          <Text style={styles.description}>{item.location.name}</Text>
-        </View>
-        <View>
-          <Text style={styles.title}>First seen in</Text>
-          <Text style={styles.description}>{firstSeen}</Text>
-        </View>
+        {!isEmpty(item.location) && (
+          <CardDetail title="Las known location" description={item.location.name} />
+        )}
+        {Array.isArray(item.episode) && <FirstSeen urlEpisode={item.episode[0]} />}
       </View>
     </Pressable>
   );
