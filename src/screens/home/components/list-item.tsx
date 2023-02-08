@@ -6,14 +6,21 @@ import {CARD_HEIGHT, CARD_WIDTH} from '../constants';
 import {useListItem} from '../hooks/use-list-item';
 import {type ResultItem} from '../types/types';
 
-const ListItemComponent = ({item}: {item: ResultItem}): JSX.Element => {
+const ListItemComponent = ({
+  item,
+  setModalVisible,
+}: {
+  item: ResultItem;
+  setModalVisible: (value: boolean) => void;
+}): JSX.Element => {
   const {firstSeen} = useListItem(item.episode[0]);
 
   return (
     <Pressable
       style={styles.itemContainer}
       onPress={() => {
-        console.log(item);
+        console.log('lets open!!');
+        setModalVisible(true);
       }}>
       <View style={styles.imageItemContainer}>
         <FastImage source={{uri: item.image}} style={styles.image} />

@@ -19,6 +19,7 @@ import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {HeaderImage} from '../../assets/images';
 import {type ResultItem} from './types/types';
 import {ListItem} from './components/list-item';
+import {DetailsModal} from './components/details-modal';
 
 const itemsList = [
   {label: 'Characters', value: 'character'},
@@ -44,14 +45,18 @@ const HomeComponent = (): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string>('character');
   const [searchInputValue, setSearchInputValue] = useState<string>('');
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const renderListItem = useCallback(
-    ({item}: {item: ResultItem}) => <ListItem item={item} key={item.id} />,
+    ({item}: {item: ResultItem}) => (
+      <ListItem setModalVisible={setModalVisible} item={item} key={item.id} />
+    ),
     [],
   );
 
   return (
     <SafeAreaView>
+      <DetailsModal visible={modalVisible} setVisible={setModalVisible} />
       <View style={styles.container}>
         <View style={styles.topBarContainer}>
           <Pressable
@@ -199,6 +204,45 @@ const styles = StyleSheet.create({
   footerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  // modal
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
   },
 });
 

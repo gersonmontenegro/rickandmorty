@@ -62,3 +62,13 @@ export interface Pagination {
 export interface useListItemType {
   firstSeen: string;
 }
+
+export interface DetailsModalProps {
+  visible: boolean;
+  setVisible: (value: boolean) => void;
+}
+
+export interface DetailProps {
+  title: string;
+  description: string;
+}

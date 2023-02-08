@@ -1,3 +1,4 @@
 import HeaderImage from './header.png';
+import Hero from './hero.png';
 
-export {HeaderImage};
+export {HeaderImage, Hero};
