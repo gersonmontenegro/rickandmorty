@@ -3,8 +3,10 @@ import {isEmpty} from 'lodash';
 import React, {memo} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
 import {scale, verticalScale} from 'react-native-size-matters';
-import {CARD_HEIGHT, CARD_WIDTH} from '../constants';
+import {Helpers} from '../../../utils/Helpers';
+import {CARD_HEIGHT, CARD_WIDTH, GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '../constants';
 import {type ResultItem} from '../types/types';
 import {CardDetail} from './card-detail';
 import {FirstSeen} from './first-seen';
@@ -26,7 +28,14 @@ const ListItemComponent = ({
         setModalVisible(true);
       }}>
       <View style={styles.imageItemContainer}>
-        <FastImage source={{uri: item.image}} style={styles.image} />
+        <FastImage source={Helpers.getImage(item)} style={styles.image}>
+          <LinearGradient
+            colors={GRADIENT_COLORS}
+            style={styles.gradient}
+            start={GRADIENT_START}
+            end={GRADIENT_END}
+          />
+        </FastImage>
       </View>
       <View style={styles.titlesContainer}>
         <View>
@@ -39,7 +48,9 @@ const ListItemComponent = ({
         {!isEmpty(item.location) && (
           <CardDetail title="Las known location" description={item.location.name} />
         )}
-        {Array.isArray(item.episode) && <FirstSeen urlEpisode={item.episode[0]} />}
+        {Array.isArray(item.episode) && (
+          <FirstSeen urlEpisode={item.episode[0] as string & any[]} />
+        )}
       </View>
     </Pressable>
   );
@@ -106,6 +117,10 @@ const styles = StyleSheet.create({
     color: '#00CF1E',
     verticalAlign: 'middle',
     height: 10,
+  },
+  gradient: {
+    height: '100%',
+    width: '100%',
   },
 });
 

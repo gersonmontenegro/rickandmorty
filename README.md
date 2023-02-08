@@ -156,3 +156,7 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
  - v0.1.6. Episodes, and Locations details are now available
 
 ![Categories details](https://i.ibb.co/Fqr3S7G/categories-details.gif)
+
+ - v0.1.7. Due to Episodes, and Locations hasn't image to show, I decided to add a default image instead, just to not to be boring
+
+![Default images](https://i.ibb.co/dBms0tw/default-episodes-locations-img.gif)

@@ -12,9 +12,9 @@ const CardDetailsComponent = ({itemDetails}: CardDetailsProps): JSX.Element => {
 
   const createEpidosdesList = useMemo((): string | unknown => {
     const isEpisodesArray = Array.isArray(itemDetails?.episode);
-    const episodies = isEpisodesArray ? (itemDetails?.episode as unknown as string[]) : [];
+    const episodes = isEpisodesArray ? (itemDetails?.episode as unknown as string[]) : [];
     return isEpisodesArray
-      ? episodies.map((item: string) => Helpers.getLastNumber(item)).join(',')
+      ? episodes.map((item: string) => Helpers.getLastNumber(item)).join(',')
       : '';
   }, [itemDetails?.episode]);
 

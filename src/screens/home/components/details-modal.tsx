@@ -9,6 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '../constants';
 import {Text} from 'react-native-paper';
 import {CardDetails} from './card-details';
+import {Helpers} from '../../../utils/Helpers';
 
 const DetailsModalComponent = ({
   visible,
@@ -29,7 +30,7 @@ const DetailsModalComponent = ({
         </View>
         <View style={styles.grayBackground}>
           <View style={styles.modalView}>
-            <FastImage source={{uri: itemDetails?.image}} style={styles.photo}>
+            <FastImage source={Helpers.getImage(itemDetails)} style={styles.photo}>
               <LinearGradient
                 colors={GRADIENT_COLORS}
                 style={styles.gradient}

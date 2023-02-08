@@ -1,25 +1,17 @@
 import React, {memo, useCallback, useState} from 'react';
-import {
-  Dimensions,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  type ImageSourcePropType,
-} from 'react-native';
+import {Dimensions, Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import {useSearchWithPagination} from './hooks/use-search-with-pagination';
 import {Button} from '@rneui/themed';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {FlatGrid} from 'react-native-super-grid';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Image} from '@rneui/base';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
-import {HeaderImage} from '../../assets/images';
+import {verticalScale} from 'react-native-size-matters';
 import {type ResultItem} from './types/types';
 import {ListItem} from './components/list-item';
 import {DetailsModal} from './components/details-modal';
+import {TopBar} from './components/top-bar';
+import {Header} from './components/header';
 
 const itemsList = [
   {label: 'Characters', value: 'character'},
@@ -64,28 +56,8 @@ const HomeComponent = (): JSX.Element => {
     <SafeAreaView>
       <DetailsModal visible={modalVisible} setVisible={setModalVisible} itemDetails={itemDetails} />
       <View style={styles.container}>
-        <View style={styles.topBarContainer}>
-          <Pressable
-            style={styles.topBarButton}
-            onPress={() => {
-              searchEpisodes('');
-            }}>
-            <Text style={styles.topBarButtonText}>All episodes</Text>
-          </Pressable>
-          <Pressable
-            style={styles.topBarButton}
-            onPress={() => {
-              searchLocations('');
-            }}>
-            <Text style={styles.topBarButtonText}>All locations</Text>
-          </Pressable>
-        </View>
-        <View>
-          <Image
-            source={HeaderImage as ImageSourcePropType}
-            style={{width: scale(350), height: verticalScale(130), padding: moderateScale(5)}}
-          />
-        </View>
+        <TopBar searchEpisodes={searchEpisodes} searchLocations={searchLocations} />
+        <Header />
         <View style={styles.headercontianer}>
           <DropDownPicker
             open={open}
@@ -191,64 +163,9 @@ const styles = StyleSheet.create({
   searchIcon: {
     right: 10,
   },
-  topBarContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    backgroundColor: 'black',
-  },
-  topBarButton: {
-    marginHorizontal: 5,
-    height: 30,
-    justifyContent: 'center',
-  },
-  topBarButtonText: {
-    color: 'white',
-    fontFamily: 'Verdana',
-    fontWeight: 'bold',
-    fontSize: 12,
-  },
   footerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-  },
-  // modal
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
   },
 });
 
