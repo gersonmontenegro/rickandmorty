@@ -145,3 +145,7 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
  - v0.1.3. Character card style is done.
 
 ![Character card](https://i.ibb.co/0DmQwC5/character-card.png)
+
+ - v0.1.4. Modal details is added, but at this moment is just a template. Next version should use real data.
+
+![Modal details template](https://i.ibb.co/TgDKY4p/modal-template.gif)
