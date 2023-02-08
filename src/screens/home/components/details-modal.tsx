@@ -1,28 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, Modal, View, ImageBackground} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {Hero} from '../../../assets/images';
 import {type DetailsModalProps} from '../types/types';
 import LinearGradient from 'react-native-linear-gradient';
-import {GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '../constants';
-import {Detail} from './detail';
+import {GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '../../../utils/constants';
 import {Text} from 'react-native-paper';
+import {CardDetails} from './card-details';
+import {Helpers} from '../../../utils/Helpers';
+import {colors} from '../../../utils/colors';
 
 const DetailsModalComponent = ({
   visible,
   setVisible,
   itemDetails,
 }: DetailsModalProps): JSX.Element => {
-  const [episodes, setEpisodes] = useState<string | undefined>('');
-  const getLastNumber = (url: string): string => (url !== null ? url.match(/\d+$/)[0] : '');
-
-  useEffect(() => {
-    const episodesList = itemDetails?.episode.map((item) => getLastNumber(item));
-    setEpisodes(episodesList?.join(','));
-  }, [itemDetails?.episode]);
-
   return (
     <Modal
       animationType="slide"
@@ -32,12 +26,12 @@ const DetailsModalComponent = ({
         setVisible(false);
       }}>
       <ImageBackground source={Hero} style={styles.centeredView}>
-        <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
+        <View style={styles.nameContainer}>
           <Text style={styles.title}>{itemDetails?.name}</Text>
         </View>
         <View style={styles.grayBackground}>
           <View style={styles.modalView}>
-            <FastImage source={{uri: itemDetails?.image}} style={styles.photo}>
+            <FastImage source={Helpers.getImage(itemDetails)} style={styles.photo}>
               <LinearGradient
                 colors={GRADIENT_COLORS}
                 style={styles.gradient}
@@ -46,23 +40,11 @@ const DetailsModalComponent = ({
               />
             </FastImage>
             <View style={styles.rightColumn}>
-              <View style={styles.detailsContainer}>
-                <View>
-                  <Detail title="Name" description={itemDetails?.name} />
-                  <Detail title="Status" description={itemDetails?.status} />
-                  <Detail title="Species" description={itemDetails?.species} />
-                  <Detail title="Gender" description={itemDetails?.gender} />
-                </View>
-                <View>
-                  <Detail title="Origin" description={itemDetails?.origin.name} />
-                  <Detail title="Location" description={itemDetails?.location.name} />
-                  <Detail title="Episodes" description={episodes} />
-                </View>
-              </View>
+              <CardDetails itemDetails={itemDetails} />
             </View>
           </View>
         </View>
-        <View style={{flex: 1, backgroundColor: 'black'}} />
+        <View style={styles.bottomSpacer} />
       </ImageBackground>
     </Modal>
   );
@@ -78,9 +60,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: scale(320),
     height: verticalScale(160),
-    backgroundColor: 'white',
+    backgroundColor: colors.whiteAbsolute,
     borderRadius: 20,
-    shadowColor: '#000',
+    shadowColor: colors.shadowColor,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -104,12 +86,8 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
   },
-  detailsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
   grayBackground: {
-    backgroundColor: '#282828',
+    backgroundColor: colors.backgroundGray,
     width: '100%',
     height: verticalScale(220),
     alignItems: 'center',
@@ -123,7 +101,15 @@ const styles = StyleSheet.create({
     maxWidth: 180,
     paddingLeft: 20,
     paddingBottom: 20,
-    color: 'white',
+    color: colors.whiteAbsolute,
+  },
+  nameContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    width: '100%',
+  },
+  bottomSpacer: {
+    flex: 1,
   },
 });
 

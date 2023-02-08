@@ -1,19 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-import axios from 'axios';
 import {useState, useEffect} from 'react';
+import axios from 'axios';
 import {Helpers} from '../../../utils/Helpers';
 import {
   type Pagination,
   type ResultItem,
   type Results,
-  type useSearchWithPaginationType,
+  type UseSearchWithPaginationType,
 } from '../types/types';
+import {
+  CHARACTERS_URL,
+  Entities,
+  EPISODES_URL,
+  LOCATIONS_URL,
+  SEARCH_ENDPOINT_TEMPLATE,
+} from '../../../utils/constants';
 
-const LOCATIONS_URL = 'https://rickandmortyapi.com/api/location';
-const EPISODES_URL = 'https://rickandmortyapi.com/api/episode';
-const CHARACTERS_URL = 'https://rickandmortyapi.com/api/character';
-
-const useSearchWithPagination = (): useSearchWithPaginationType => {
+const useSearchWithPagination = (): UseSearchWithPaginationType => {
   const [searchResults, setSearchResults] = useState<ResultItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,37 +30,27 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
   const [episodes, setEpisodes] = useState<number>(0);
 
   useEffect(() => {
-    fetch(LOCATIONS_URL)
-      .then(async (res) => await res.json())
-      .then((data: Results) => {
-        setLocations(data.info.count);
-      })
-      .catch((errorMessage) => {
-        setError(errorMessage as string);
-      });
+    void axios.get(LOCATIONS_URL).then((locationsData) => {
+      const locationInfo = locationsData.data as Results;
+      setLocations(locationInfo.info.count);
+    });
 
-    fetch(EPISODES_URL)
-      .then(async (res) => await res.json())
-      .then((data: Results) => {
-        setEpisodes(data.info.count);
-      })
-      .catch((errorMessage) => {
-        setError(errorMessage as string);
-      });
+    void axios.get(CHARACTERS_URL).then((episodesData) => {
+      const episodesInfo = episodesData.data as Results;
+      setCharacters(episodesInfo.info.count);
+    });
 
-    fetch(CHARACTERS_URL)
-      .then(async (res) => await res.json())
-      .then((data: Results) => {
-        setCharacters(data.info.count);
-      })
-      .catch((errorMessage) => {
-        setError(errorMessage as string);
-      });
+    void axios.get(EPISODES_URL).then((characteresData) => {
+      const characteresInfo = characteresData.data as Results;
+      setEpisodes(characteresInfo.info.count);
+    });
   }, []);
 
   const setNewCurrentPage = (prevPage: number, nextPage: number): void => {
     if (prevPage === 0 && nextPage === 0) {
       setCurrentPage(1);
+    } else if (prevPage === -1) {
+      setCurrentPage(0);
     } else if (prevPage === 0 || isNaN(prevPage)) {
       setCurrentPage(1);
     } else if (nextPage === 0 || isNaN(nextPage)) {
@@ -72,25 +64,36 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
     setLoading(true);
     setError(null);
 
-    const endpoint = `https://rickandmortyapi.com/api/${entity}/?name=${query}&page=${page}`;
+    const endpoint = SEARCH_ENDPOINT_TEMPLATE.replace('%entity%', entity)
+      .replace('%query%', query)
+      .replace('%page%', page);
 
     void axios
       .get(endpoint)
       .then((response) => {
         const results = response.data as Results;
-        setSearchResults(results.results);
-        setNewCurrentPage(
-          Number(Helpers.getURLParams(results.info.prev).page) ?? 0,
-          Number(Helpers.getURLParams(results.info.next).page) ?? 0,
-        );
-        setPagination({
-          nextPage: results.info.next,
-          prevPage: results.info.prev,
-        });
-        setTotalPages(results.info.pages);
+        if (results.results.length > 0) {
+          setSearchResults(results.results);
+          setNewCurrentPage(
+            Number(Helpers.getURLParams(results.info.prev).page) ?? 0,
+            Number(Helpers.getURLParams(results.info.next).page) ?? 0,
+          );
+          setPagination({
+            nextPage: results.info.next,
+            prevPage: results.info.prev,
+          });
+          setTotalPages(results.info.pages);
+        }
         setLoading(false);
       })
       .catch((queryError) => {
+        setNewCurrentPage(-1, 0);
+        setPagination({
+          nextPage: '',
+          prevPage: '',
+        });
+        setSearchResults([]);
+        setTotalPages(0);
         setError(queryError as string);
         setLoading(false);
       });
@@ -111,19 +114,19 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
   };
 
   const searchCharacters = (queryParameter: string): void => {
-    setEntity('character');
+    setEntity(Entities.Character);
     setQuery(queryParameter);
     setPage('0');
   };
 
   const searchEpisodes = (queryParameter: string): void => {
-    setEntity('episode');
+    setEntity(Entities.Episode);
     setQuery(queryParameter);
     setPage('0');
   };
 
   const searchLocations = (queryParameter: string): void => {
-    setEntity('location');
+    setEntity(Entities.Location);
     setQuery(queryParameter);
     setPage('0');
   };

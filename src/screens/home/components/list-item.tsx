@@ -1,10 +1,23 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import {isEmpty} from 'lodash';
 import React, {memo} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
 import {scale, verticalScale} from 'react-native-size-matters';
-import {CARD_HEIGHT, CARD_WIDTH} from '../constants';
-import {useListItem} from '../hooks/use-list-item';
+import {Helpers} from '../../../utils/Helpers';
+import {
+  BULLET,
+  CARD_HEIGHT,
+  CARD_WIDTH,
+  GRADIENT_COLORS,
+  GRADIENT_END,
+  GRADIENT_START,
+} from '../../../utils/constants';
 import {type ResultItem} from '../types/types';
+import {CardDetail} from './card-detail';
+import {FirstSeen} from './first-seen';
+import {colors} from '../../../utils/colors';
 
 const ListItemComponent = ({
   item,
@@ -15,8 +28,8 @@ const ListItemComponent = ({
   setItemDetails: (value: ResultItem) => void;
   setModalVisible: (value: boolean) => void;
 }): JSX.Element => {
-  const {firstSeen} = useListItem(item.episode[0]);
-
+  // Show status details only if entity is character
+  const isCharacter = Helpers.isLocation(item) && Helpers.isEpisode(item);
   return (
     <Pressable
       style={styles.itemContainer}
@@ -25,24 +38,31 @@ const ListItemComponent = ({
         setModalVisible(true);
       }}>
       <View style={styles.imageItemContainer}>
-        <FastImage source={{uri: item.image}} style={styles.image} />
+        <FastImage source={Helpers.getImage(item)} style={styles.image}>
+          <LinearGradient
+            colors={GRADIENT_COLORS}
+            style={styles.gradient}
+            start={GRADIENT_START}
+            end={GRADIENT_END}
+          />
+        </FastImage>
       </View>
       <View style={styles.titlesContainer}>
         <View>
           <Text style={styles.characterName}>{item.name}</Text>
-          <View style={styles.statusContainer}>
-            <Text style={styles.bullet}>•</Text>
-            <Text style={styles.status}>{`${item.status} - ${item.species}`}</Text>
-          </View>
+          {isCharacter && (
+            <View style={styles.statusContainer}>
+              <Text style={styles.bullet}>{BULLET}</Text>
+              <Text style={styles.status}>{`${item.status} - ${item.species}`}</Text>
+            </View>
+          )}
         </View>
-        <View>
-          <Text style={styles.title}>Last know location</Text>
-          <Text style={styles.description}>{item.location.name}</Text>
-        </View>
-        <View>
-          <Text style={styles.title}>First seen in</Text>
-          <Text style={styles.description}>{firstSeen}</Text>
-        </View>
+        {!isEmpty(item.location) && (
+          <CardDetail title="Las known location" description={item.location.name} />
+        )}
+        {Array.isArray(item.episode) && (
+          <FirstSeen urlEpisode={item.episode[0] as string & any[]} />
+        )}
       </View>
     </Pressable>
   );
@@ -51,12 +71,12 @@ const ListItemComponent = ({
 const styles = StyleSheet.create({
   itemContainer: {
     justifyContent: 'flex-end',
-    backgroundColor: 'white',
+    backgroundColor: colors.whiteAbsolute,
     flexDirection: 'row',
     borderRadius: 5,
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
-    shadowColor: 'white',
+    shadowColor: colors.whiteAbsolute,
     shadowOffset: {
       width: 3,
       height: 3,
@@ -106,9 +126,13 @@ const styles = StyleSheet.create({
   bullet: {
     fontFamily: 'Verdana',
     fontSize: 12,
-    color: '#00CF1E',
+    color: colors.activeBullet,
     verticalAlign: 'middle',
     height: 10,
+  },
+  gradient: {
+    height: '100%',
+    width: '100%',
   },
 });
 

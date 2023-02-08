@@ -1,10 +1,3 @@
-export interface useSearchWithPaginationProps {
-  entity: string;
-  query: string;
-  page: string;
-  pageSize: string;
-}
-
 export interface ResultsInfo {
   count: number;
   prev: string;
@@ -14,7 +7,7 @@ export interface ResultsInfo {
 
 export interface ResultItem {
   created: string;
-  episode: [string];
+  episodes: [string];
   gender: string;
   id: number;
   image: string;
@@ -31,6 +24,9 @@ export interface ResultItem {
   status: string;
   type: string;
   url: string;
+  air_date?: string;
+  episode?: string;
+  dimension?: string;
 }
 
 export interface Results {
@@ -38,7 +34,7 @@ export interface Results {
   results: ResultItem[];
 }
 
-export interface useSearchWithPaginationType {
+export interface UseSearchWithPaginationType {
   results: ResultItem[];
   loading: boolean;
   error: string | null;
@@ -59,7 +55,7 @@ export interface Pagination {
   prevPage: string;
 }
 
-export interface useListItemType {
+export interface UseListItemType {
   firstSeen: string;
 }
 
@@ -69,7 +65,30 @@ export interface DetailsModalProps {
   setVisible: (value: boolean) => void;
 }
 
+export interface CardDetailsProps {
+  itemDetails: ResultItem | null;
+}
+
 export interface DetailProps {
   title: string;
   description?: string;
+}
+
+export interface Colors {
+  blackAbsolute: string;
+  whiteAbsolute: string;
+
+  whiteTransparent: string;
+
+  primaryGray: string;
+  secondaryGray: string;
+  backgroundGray: string;
+  secondaryBackgroundGray: string;
+
+  activeBullet: string;
+  inactiveBullet: string;
+
+  shadowColor: string;
+
+  whiteIcon: string;
 }

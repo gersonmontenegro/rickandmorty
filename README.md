@@ -150,4 +150,25 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
 ![Modal details template](https://i.ibb.co/TgDKY4p/modal-template.gif)
 
  - v0.1.5. Modal details is working with real data
+
 ![Modal details with real data](https://i.ibb.co/dMP3Xpf/open-card-details.gif)
+
+ - v0.1.6. Episodes, and Locations details are now available
+
+![Categories details](https://i.ibb.co/Fqr3S7G/categories-details.gif)
+
+ - v0.1.7. Due to Episodes, and Locations hasn't image to show, I decided to add a default image instead, just to not to be boring
+
+![Default images](https://i.ibb.co/dBms0tw/default-episodes-locations-img.gif)
+
+ - v0.1.8. Create isolated components for every section in home screen, that way we improve component composition.
+ 
+ - v0.1.9. Finally, this could be one of the last versions. Now it's necessary to improve our code. Firstly, by reviewing manually the code, and solving most obvious anti-patterns. The, it could be useful to scan the code with SonarQube.
+
+![First final prototype](https://i.postimg.cc/kM6xDGkF/final.png)
+
+ - v0.1.10. Meanwhile some magic numbers are solved, it's been obvious there is no time to finish some features, suchs as unit testing, handle language, and add CI/CD process.
+
+ - v0.1.11. After checked the code, solve some issues, and use SonarQube to find flawless code and get 0 issues, this is the final version. Maybe is not perfect, and definitely I need more time to write more features (mentioned in the previous vervios), and solve the issue with pagination, but we're running out of time, so, is what it is.
+
+![Final version](https://i.ibb.co/f47TJKt/final.gif)

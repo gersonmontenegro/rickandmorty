@@ -1,8 +1,8 @@
 import axios from 'axios';
 import {useEffect, useState} from 'react';
-import {type useListItemType} from '../types/types';
+import {type UseListItemType} from '../types/types';
 
-export const useListItem = (endpoint: string): useListItemType => {
+export const useListItem = (endpoint: string): UseListItemType => {
   const [firstSeen, setFirstSeen] = useState<string>('');
 
   useEffect(() => {
