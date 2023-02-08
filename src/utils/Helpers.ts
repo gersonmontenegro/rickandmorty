@@ -16,9 +16,17 @@ export const Helpers = {
 
   getLastNumber: (url: string): string => (url !== null ? url.match(/\d+$/)[0] : ''),
 
+  isLocation: (itemDetails: ResultItem | null): boolean => {
+    return has(itemDetails, 'residents');
+  },
+
+  isEpisode: (itemDetails: ResultItem | null): boolean => {
+    return has(itemDetails, 'characters');
+  },
+
   getImage: (itemDetails: ResultItem | null): Source => {
-    const hasResidents = has(itemDetails, 'residents');
-    const hasCharacters = has(itemDetails, 'characters');
+    const hasResidents = Helpers.isLocation(itemDetails);
+    const hasCharacters = Helpers.isEpisode(itemDetails);
 
     if (hasResidents) {
       return Rick as Source;

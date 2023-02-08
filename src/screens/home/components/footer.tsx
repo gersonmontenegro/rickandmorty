@@ -4,7 +4,8 @@ import FastImage, {type Source} from 'react-native-fast-image';
 import {Text} from 'react-native-paper';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {Facebook, Instagram, Linkedin} from '../../../assets/images';
-import {BULLET} from '../constants';
+import {colors} from '../../../utils/colors';
+import {BULLET} from '../../../utils/constants';
 
 interface FooterProps {
   locations: number;
@@ -44,7 +45,7 @@ const FooterComponent = ({locations, characters, episodes}: FooterProps): JSX.El
 const styles = StyleSheet.create({
   footerContainer: {
     justifyContent: 'center',
-    backgroundColor: 'black',
+    backgroundColor: colors.blackAbsolute,
   },
   quantities: {
     justifyContent: 'center',
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     height: verticalScale(30),
   },
   text: {
-    color: 'gray',
+    color: colors.primaryGray,
     fontFamily: 'Verdana',
     fontWeight: 'bold',
     fontSize: 10,

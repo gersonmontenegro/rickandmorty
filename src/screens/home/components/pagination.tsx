@@ -2,7 +2,8 @@ import React, {memo} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {scale, verticalScale} from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {SEPARATOR} from '../constants';
+import {colors} from '../../../utils/colors';
+import {SEPARATOR} from '../../../utils/constants';
 
 interface PaginationProps {
   handleNextPage: () => void;
@@ -10,42 +11,40 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
 }
-
+// TODO: Add page numbers, and allow user to select page size
 const PaginationComponent = ({
   handleNextPage,
   handlePrevPage,
   currentPage,
   totalPages,
-}: PaginationProps): JSX.Element => {
-  return (
-    <View style={styles.mainContainer}>
-      <View style={styles.container}>
-        <Pressable style={styles.arrowButton} onPress={handlePrevPage}>
-          <Icon name="caret-left" size={20} color="#ffff" />
-        </Pressable>
-        <Text style={styles.separator}>{SEPARATOR}</Text>
-        <View style={styles.pagesContainer}>
-          <Text style={styles.pageText}>{`${currentPage} / ${totalPages}`}</Text>
-        </View>
-        <Text style={styles.separator}>{SEPARATOR}</Text>
-        <Pressable style={styles.arrowButton} onPress={handleNextPage}>
-          <Icon name="caret-right" size={20} color="#ffff" />
-        </Pressable>
+}: PaginationProps): JSX.Element => (
+  <View style={styles.mainContainer}>
+    <View style={styles.container}>
+      <Pressable style={styles.arrowButton} onPress={handlePrevPage}>
+        <Icon name="caret-left" size={20} color={colors.whiteIcon} />
+      </Pressable>
+      <Text style={styles.separator}>{SEPARATOR}</Text>
+      <View style={styles.pagesContainer}>
+        <Text style={styles.pageText}>{`${currentPage} / ${totalPages}`}</Text>
       </View>
+      <Text style={styles.separator}>{SEPARATOR}</Text>
+      <Pressable style={styles.arrowButton} onPress={handleNextPage}>
+        <Icon name="caret-right" size={20} color={colors.whiteIcon} />
+      </Pressable>
     </View>
-  );
-};
+  </View>
+);
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: 'black',
+    backgroundColor: colors.blackAbsolute,
     justifyContent: 'center',
     alignItems: 'center',
     width: scale(350),
     height: verticalScale(40),
   },
   container: {
-    backgroundColor: '#333333',
+    backgroundColor: colors.secondaryBackgroundGray,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   pageText: {
-    color: 'white',
+    color: colors.whiteAbsolute,
   },
   separator: {
     color: 'lightgray',

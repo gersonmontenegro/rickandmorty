@@ -10,6 +10,7 @@ import {SearchBar} from './components/search-bar';
 import {SearchResults} from './components/search-results';
 import {Pagination} from './components/pagination';
 import {Footer} from './components/footer';
+import {colors} from '../../utils/colors';
 
 const HomeComponent = (): JSX.Element => {
   const {
@@ -58,7 +59,7 @@ const HomeComponent = (): JSX.Element => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'black',
+    backgroundColor: colors.blackAbsolute,
   },
 });
 

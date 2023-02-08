@@ -166,3 +166,7 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
  - v0.1.9. Finally, this could be one of the last versions. Now it's necessary to improve our code. Firstly, by reviewing manually the code, and solving most obvious anti-patterns. The, it could be useful to scan the code with SonarQube.
 
 ![First final prototype](https://i.postimg.cc/kM6xDGkF/final.png)
+
+ - v0.1.10. Meanwhile some magic numbers are solved, it's been obvious there is no time to finish some features, suchs as unit testing, handle language, and add CI/CD process.
+
+ - v0.1.11. After checked the code, solve some issues, and use SonarQube to find flawless code and get 0 issues, this is the final version. Maybe is not perfect, and definitely I need more time to write more features (mentioned in the previous vervios), and solve the issue with pagination, but we're running out of time, so, is what it is.

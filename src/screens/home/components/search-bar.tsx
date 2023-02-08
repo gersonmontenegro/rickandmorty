@@ -1,8 +1,9 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {SEPARATOR} from '../constants';
+import {Entities, itemsList, SEPARATOR} from '../../../utils/constants';
+import {colors} from '../../../utils/colors';
 
 interface SearchBarProps {
   searchCharacters: (value: string) => void;
@@ -10,20 +11,34 @@ interface SearchBarProps {
   searchEpisodes: (value: string) => void;
 }
 
-const itemsList = [
-  {label: 'Characters', value: 'character'},
-  {label: 'Locations', value: 'location'},
-  {label: 'Episodes', value: 'episode'},
-];
-
 const SearchBarComponent = ({
   searchCharacters,
   searchEpisodes,
   searchLocations,
 }: SearchBarProps): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string>('character');
+  const [value, setValue] = useState<string>(Entities.Character);
   const [searchInputValue, setSearchInputValue] = useState<string>('');
+
+  const onPressSearch = useCallback(() => {
+    switch (value) {
+      case Entities.Character: {
+        searchCharacters(searchInputValue);
+        break;
+      }
+      case Entities.Episode: {
+        searchEpisodes(searchInputValue);
+        break;
+      }
+      case Entities.Location: {
+        searchLocations(searchInputValue);
+        break;
+      }
+      default: {
+        searchCharacters(searchInputValue);
+      }
+    }
+  }, [searchCharacters, searchEpisodes, searchInputValue, searchLocations, value]);
 
   return (
     <View style={styles.headercontianer}>
@@ -33,11 +48,11 @@ const SearchBarComponent = ({
         items={itemsList}
         setOpen={setOpen}
         setValue={setValue}
-        style={{width: 130, backgroundColor: 'transparent', borderColor: 'transparent'}}
-        containerStyle={{backgroundColor: 'transparent', width: 130}}
-        listItemLabelStyle={{color: 'white'}}
-        listItemContainerStyle={{backgroundColor: '#292929'}}
-        textStyle={{color: 'white'}}
+        style={styles.dropdown}
+        containerStyle={styles.containerStyle}
+        listItemLabelStyle={styles.listItemLabelStyle}
+        listItemContainerStyle={styles.listItemContainerStyle}
+        textStyle={styles.textStyle}
       />
       <Text style={styles.separator}>{SEPARATOR}</Text>
       <TextInput
@@ -49,27 +64,8 @@ const SearchBarComponent = ({
         style={styles.searchInput}
         placeholderTextColor="lightgray"
       />
-      <Pressable
-        onPress={() => {
-          switch (value) {
-            case 'character': {
-              searchCharacters(searchInputValue);
-              break;
-            }
-            case 'episode': {
-              searchEpisodes(searchInputValue);
-              break;
-            }
-            case 'location': {
-              searchLocations(searchInputValue);
-              break;
-            }
-            default: {
-              searchCharacters(searchInputValue);
-            }
-          }
-        }}>
-        <Icon name="search" size={20} color="#ffff" style={styles.searchIcon} />
+      <Pressable onPress={onPressSearch}>
+        <Icon name="search" size={20} color={colors.whiteIcon} style={styles.searchIcon} />
       </Pressable>
     </View>
   );
@@ -80,7 +76,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 30,
     zIndex: 10000,
-    backgroundColor: '#292929',
+    backgroundColor: colors.backgroundGray,
     marginHorizontal: 10,
     borderRadius: 20,
     justifyContent: 'space-evenly',
@@ -92,7 +88,7 @@ const styles = StyleSheet.create({
     height: 30,
     marginHorizontal: 10,
     justifyContent: 'center',
-    color: 'white',
+    color: colors.whiteAbsolute,
     fontSize: 12,
     fontFamily: 'Verdana',
   },
@@ -100,7 +96,25 @@ const styles = StyleSheet.create({
     right: 10,
   },
   separator: {
-    color: 'lightgray',
+    color: colors.secondaryGray,
+  },
+  listItemLabelStyle: {
+    color: colors.whiteAbsolute,
+  },
+  textStyle: {
+    color: colors.whiteAbsolute,
+  },
+  listItemContainerStyle: {
+    backgroundColor: colors.backgroundGray,
+  },
+  dropdown: {
+    width: 130,
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+  },
+  containerStyle: {
+    backgroundColor: 'transparent',
+    width: 130,
   },
 });
 

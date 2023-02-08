@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
 import {Text, Pressable, View, StyleSheet} from 'react-native';
+import {colors} from '../../../utils/colors';
 
 interface TopBarProps {
   searchEpisodes: (value: string) => void;
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   topBarContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    backgroundColor: 'black',
+    backgroundColor: colors.blackAbsolute,
   },
   topBarButton: {
     marginHorizontal: 5,
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   topBarButtonText: {
-    color: 'white',
+    color: colors.whiteAbsolute,
     fontFamily: 'Verdana',
     fontWeight: 'bold',
     fontSize: 12,

@@ -6,10 +6,11 @@ import {scale, verticalScale} from 'react-native-size-matters';
 import {Hero} from '../../../assets/images';
 import {type DetailsModalProps} from '../types/types';
 import LinearGradient from 'react-native-linear-gradient';
-import {GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '../constants';
+import {GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '../../../utils/constants';
 import {Text} from 'react-native-paper';
 import {CardDetails} from './card-details';
 import {Helpers} from '../../../utils/Helpers';
+import {colors} from '../../../utils/colors';
 
 const DetailsModalComponent = ({
   visible,
@@ -25,7 +26,7 @@ const DetailsModalComponent = ({
         setVisible(false);
       }}>
       <ImageBackground source={Hero} style={styles.centeredView}>
-        <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
+        <View style={styles.nameContainer}>
           <Text style={styles.title}>{itemDetails?.name}</Text>
         </View>
         <View style={styles.grayBackground}>
@@ -43,7 +44,7 @@ const DetailsModalComponent = ({
             </View>
           </View>
         </View>
-        <View style={{flex: 1, backgroundColor: 'black'}} />
+        <View style={styles.bottomSpacer} />
       </ImageBackground>
     </Modal>
   );
@@ -59,9 +60,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: scale(320),
     height: verticalScale(160),
-    backgroundColor: 'white',
+    backgroundColor: colors.whiteAbsolute,
     borderRadius: 20,
-    shadowColor: '#000',
+    shadowColor: colors.shadowColor,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   grayBackground: {
-    backgroundColor: '#282828',
+    backgroundColor: colors.backgroundGray,
     width: '100%',
     height: verticalScale(220),
     alignItems: 'center',
@@ -100,7 +101,15 @@ const styles = StyleSheet.create({
     maxWidth: 180,
     paddingLeft: 20,
     paddingBottom: 20,
-    color: 'white',
+    color: colors.whiteAbsolute,
+  },
+  nameContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    width: '100%',
+  },
+  bottomSpacer: {
+    flex: 1,
   },
 });
 

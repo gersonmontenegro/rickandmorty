@@ -1,7 +1,8 @@
 import React, {memo, useCallback} from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {verticalScale} from 'react-native-size-matters';
 import {FlatGrid} from 'react-native-super-grid';
+import {colors} from '../../../utils/colors';
 import {type ResultItem} from '../types/types';
 import {ListItem} from './list-item';
 
@@ -28,11 +29,7 @@ const SearchResultsComponent = ({
     [setItemDetails, setModalVisible],
   );
 
-  return (
-    <View>
-      <FlatGrid data={results ?? []} style={styles.gridView} renderItem={renderListItem} />
-    </View>
-  );
+  return <FlatGrid data={results ?? []} style={styles.gridView} renderItem={renderListItem} />;
 };
 
 const styles = StyleSheet.create({
@@ -40,7 +37,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: Dimensions.get('window').width,
     height: verticalScale(350),
-    backgroundColor: '#333333',
+    backgroundColor: colors.secondaryBackgroundGray,
   },
 });
 

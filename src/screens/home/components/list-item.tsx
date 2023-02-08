@@ -13,10 +13,11 @@ import {
   GRADIENT_COLORS,
   GRADIENT_END,
   GRADIENT_START,
-} from '../constants';
+} from '../../../utils/constants';
 import {type ResultItem} from '../types/types';
 import {CardDetail} from './card-detail';
 import {FirstSeen} from './first-seen';
+import {colors} from '../../../utils/colors';
 
 const ListItemComponent = ({
   item,
@@ -27,6 +28,8 @@ const ListItemComponent = ({
   setItemDetails: (value: ResultItem) => void;
   setModalVisible: (value: boolean) => void;
 }): JSX.Element => {
+  // Show status details only if entity is character
+  const isCharacter = Helpers.isLocation(item) && Helpers.isEpisode(item);
   return (
     <Pressable
       style={styles.itemContainer}
@@ -47,10 +50,12 @@ const ListItemComponent = ({
       <View style={styles.titlesContainer}>
         <View>
           <Text style={styles.characterName}>{item.name}</Text>
-          <View style={styles.statusContainer}>
-            <Text style={styles.bullet}>{BULLET}</Text>
-            <Text style={styles.status}>{`${item.status} - ${item.species}`}</Text>
-          </View>
+          {isCharacter && (
+            <View style={styles.statusContainer}>
+              <Text style={styles.bullet}>{BULLET}</Text>
+              <Text style={styles.status}>{`${item.status} - ${item.species}`}</Text>
+            </View>
+          )}
         </View>
         {!isEmpty(item.location) && (
           <CardDetail title="Las known location" description={item.location.name} />
@@ -66,12 +71,12 @@ const ListItemComponent = ({
 const styles = StyleSheet.create({
   itemContainer: {
     justifyContent: 'flex-end',
-    backgroundColor: 'white',
+    backgroundColor: colors.whiteAbsolute,
     flexDirection: 'row',
     borderRadius: 5,
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
-    shadowColor: 'white',
+    shadowColor: colors.whiteAbsolute,
     shadowOffset: {
       width: 3,
       height: 3,
@@ -121,7 +126,7 @@ const styles = StyleSheet.create({
   bullet: {
     fontFamily: 'Verdana',
     fontSize: 12,
-    color: '#00CF1E',
+    color: colors.activeBullet,
     verticalAlign: 'middle',
     height: 10,
   },

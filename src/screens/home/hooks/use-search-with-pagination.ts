@@ -1,19 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-import axios from 'axios';
 import {useState, useEffect} from 'react';
+import axios from 'axios';
 import {Helpers} from '../../../utils/Helpers';
 import {
   type Pagination,
   type ResultItem,
   type Results,
-  type useSearchWithPaginationType,
+  type UseSearchWithPaginationType,
 } from '../types/types';
+import {
+  CHARACTERS_URL,
+  Entities,
+  EPISODES_URL,
+  LOCATIONS_URL,
+  SEARCH_ENDPOINT_TEMPLATE,
+} from '../../../utils/constants';
 
-const LOCATIONS_URL = 'https://rickandmortyapi.com/api/location';
-const EPISODES_URL = 'https://rickandmortyapi.com/api/episode';
-const CHARACTERS_URL = 'https://rickandmortyapi.com/api/character';
-
-const useSearchWithPagination = (): useSearchWithPaginationType => {
+const useSearchWithPagination = (): UseSearchWithPaginationType => {
   const [searchResults, setSearchResults] = useState<ResultItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,32 +30,20 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
   const [episodes, setEpisodes] = useState<number>(0);
 
   useEffect(() => {
-    fetch(LOCATIONS_URL)
-      .then(async (res) => await res.json())
-      .then((data: Results) => {
-        setLocations(data.info.count);
-      })
-      .catch((errorMessage) => {
-        setError(errorMessage as string);
-      });
+    void axios.get(LOCATIONS_URL).then((locationsData) => {
+      const locationInfo = locationsData.data as Results;
+      setLocations(locationInfo.info.count);
+    });
 
-    fetch(EPISODES_URL)
-      .then(async (res) => await res.json())
-      .then((data: Results) => {
-        setEpisodes(data.info.count);
-      })
-      .catch((errorMessage) => {
-        setError(errorMessage as string);
-      });
+    void axios.get(CHARACTERS_URL).then((episodesData) => {
+      const episodesInfo = episodesData.data as Results;
+      setCharacters(episodesInfo.info.count);
+    });
 
-    fetch(CHARACTERS_URL)
-      .then(async (res) => await res.json())
-      .then((data: Results) => {
-        setCharacters(data.info.count);
-      })
-      .catch((errorMessage) => {
-        setError(errorMessage as string);
-      });
+    void axios.get(EPISODES_URL).then((characteresData) => {
+      const characteresInfo = characteresData.data as Results;
+      setEpisodes(characteresInfo.info.count);
+    });
   }, []);
 
   const setNewCurrentPage = (prevPage: number, nextPage: number): void => {
@@ -72,7 +62,9 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
     setLoading(true);
     setError(null);
 
-    const endpoint = `https://rickandmortyapi.com/api/${entity}/?name=${query}&page=${page}`;
+    const endpoint = SEARCH_ENDPOINT_TEMPLATE.replace('%entity%', entity)
+      .replace('%query%', query)
+      .replace('%page%', page);
 
     void axios
       .get(endpoint)
@@ -111,19 +103,19 @@ const useSearchWithPagination = (): useSearchWithPaginationType => {
   };
 
   const searchCharacters = (queryParameter: string): void => {
-    setEntity('character');
+    setEntity(Entities.Character);
     setQuery(queryParameter);
     setPage('0');
   };
 
   const searchEpisodes = (queryParameter: string): void => {
-    setEntity('episode');
+    setEntity(Entities.Episode);
     setQuery(queryParameter);
     setPage('0');
   };
 
   const searchLocations = (queryParameter: string): void => {
-    setEntity('location');
+    setEntity(Entities.Location);
     setQuery(queryParameter);
     setPage('0');
   };
