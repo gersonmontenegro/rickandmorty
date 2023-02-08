@@ -150,7 +150,9 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
 ![Modal details template](https://i.ibb.co/TgDKY4p/modal-template.gif)
 
  - v0.1.5. Modal details is working with real data
+
 ![Modal details with real data](https://i.ibb.co/dMP3Xpf/open-card-details.gif)
 
  - v0.1.6. Episodes, and Locations details are now available
+
 ![Categories details](https://i.ibb.co/Fqr3S7G/categories-details.gif)
