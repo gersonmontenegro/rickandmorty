@@ -8,9 +8,11 @@ import {type ResultItem} from '../types/types';
 
 const ListItemComponent = ({
   item,
+  setItemDetails,
   setModalVisible,
 }: {
   item: ResultItem;
+  setItemDetails: (value: ResultItem) => void;
   setModalVisible: (value: boolean) => void;
 }): JSX.Element => {
   const {firstSeen} = useListItem(item.episode[0]);
@@ -19,7 +21,7 @@ const ListItemComponent = ({
     <Pressable
       style={styles.itemContainer}
       onPress={() => {
-        console.log('lets open!!');
+        setItemDetails(item);
         setModalVisible(true);
       }}>
       <View style={styles.imageItemContainer}>

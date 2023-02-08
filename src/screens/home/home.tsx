@@ -46,17 +46,23 @@ const HomeComponent = (): JSX.Element => {
   const [value, setValue] = useState<string>('character');
   const [searchInputValue, setSearchInputValue] = useState<string>('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [itemDetails, setItemDetails] = useState<ResultItem | null>(null);
 
   const renderListItem = useCallback(
     ({item}: {item: ResultItem}) => (
-      <ListItem setModalVisible={setModalVisible} item={item} key={item.id} />
+      <ListItem
+        setModalVisible={setModalVisible}
+        item={item}
+        key={item.id}
+        setItemDetails={setItemDetails}
+      />
     ),
     [],
   );
 
   return (
     <SafeAreaView>
-      <DetailsModal visible={modalVisible} setVisible={setModalVisible} />
+      <DetailsModal visible={modalVisible} setVisible={setModalVisible} itemDetails={itemDetails} />
       <View style={styles.container}>
         <View style={styles.topBarContainer}>
           <Pressable

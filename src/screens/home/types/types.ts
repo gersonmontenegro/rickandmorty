@@ -64,11 +64,12 @@ export interface useListItemType {
 }
 
 export interface DetailsModalProps {
+  itemDetails: ResultItem | null;
   visible: boolean;
   setVisible: (value: boolean) => void;
 }
 
 export interface DetailProps {
   title: string;
-  description: string;
+  description?: string;
 }
