@@ -70,19 +70,36 @@ const useSearchWithPagination = (): UseSearchWithPaginationType => {
       .get(endpoint)
       .then((response) => {
         const results = response.data as Results;
-        setSearchResults(results.results);
-        setNewCurrentPage(
-          Number(Helpers.getURLParams(results.info.prev).page) ?? 0,
-          Number(Helpers.getURLParams(results.info.next).page) ?? 0,
-        );
-        setPagination({
-          nextPage: results.info.next,
-          prevPage: results.info.prev,
-        });
-        setTotalPages(results.info.pages);
+        if (results.results.length > 0) {
+          setSearchResults(results.results);
+          setNewCurrentPage(
+            Number(Helpers.getURLParams(results.info.prev).page) ?? 0,
+            Number(Helpers.getURLParams(results.info.next).page) ?? 0,
+          );
+          setPagination({
+            nextPage: results.info.next,
+            prevPage: results.info.prev,
+          });
+          setTotalPages(results.info.pages);
+        } else {
+          setTotalPages(0);
+          setPagination({
+            nextPage: '',
+            prevPage: '',
+          });
+          setSearchResults([]);
+        }
         setLoading(false);
       })
       .catch((queryError) => {
+        setTotalPages(0);
+        setPagination({
+          nextPage: '',
+          prevPage: '',
+        });
+        setSearchResults([]);
+        setNewCurrentPage(0, 0);
+
         setError(queryError as string);
         setLoading(false);
       });
