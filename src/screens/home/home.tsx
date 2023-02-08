@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useSearchWithPagination} from './hooks/use-search-with-pagination';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -28,6 +28,10 @@ const HomeComponent = (): JSX.Element => {
   } = useSearchWithPagination();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [itemDetails, setItemDetails] = useState<ResultItem | null>(null);
+
+  useEffect(() => {
+    searchCharacters('');
+  }, [searchCharacters]);
 
   return (
     <SafeAreaView>
