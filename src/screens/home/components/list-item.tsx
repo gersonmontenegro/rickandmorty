@@ -6,7 +6,14 @@ import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {Helpers} from '../../../utils/Helpers';
-import {CARD_HEIGHT, CARD_WIDTH, GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '../constants';
+import {
+  BULLET,
+  CARD_HEIGHT,
+  CARD_WIDTH,
+  GRADIENT_COLORS,
+  GRADIENT_END,
+  GRADIENT_START,
+} from '../constants';
 import {type ResultItem} from '../types/types';
 import {CardDetail} from './card-detail';
 import {FirstSeen} from './first-seen';
@@ -41,7 +48,7 @@ const ListItemComponent = ({
         <View>
           <Text style={styles.characterName}>{item.name}</Text>
           <View style={styles.statusContainer}>
-            <Text style={styles.bullet}>•</Text>
+            <Text style={styles.bullet}>{BULLET}</Text>
             <Text style={styles.status}>{`${item.status} - ${item.species}`}</Text>
           </View>
         </View>

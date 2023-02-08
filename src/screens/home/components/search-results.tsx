@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   gridView: {
     marginTop: 10,
     width: Dimensions.get('window').width,
-    height: verticalScale(380),
+    height: verticalScale(350),
     backgroundColor: '#333333',
   },
 });

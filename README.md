@@ -162,3 +162,7 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
 ![Default images](https://i.ibb.co/dBms0tw/default-episodes-locations-img.gif)
 
  - v0.1.8. Create isolated components for every section in home screen, that way we improve component composition.
+ 
+ - v0.1.9. Finally, this could be one of the last versions. Now it's necessary to improve our code. Firstly, by reviewing manually the code, and solving most obvious anti-patterns. The, it could be useful to scan the code with SonarQube.
+
+![First final prototype](https://i.postimg.cc/kM6xDGkF/final.png)

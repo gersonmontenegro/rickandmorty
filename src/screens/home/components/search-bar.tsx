@@ -1,7 +1,8 @@
 import React, {memo, useState} from 'react';
-import {Pressable, StyleSheet, TextInput, View} from 'react-native';
+import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {SEPARATOR} from '../constants';
 
 interface SearchBarProps {
   searchCharacters: (value: string) => void;
@@ -26,25 +27,25 @@ const SearchBarComponent = ({
 
   return (
     <View style={styles.headercontianer}>
-      <></>
       <DropDownPicker
         open={open}
         value={value}
         items={itemsList}
         setOpen={setOpen}
         setValue={setValue}
-        style={{width: 140, backgroundColor: 'transparent', borderColor: 'transparent'}}
-        containerStyle={{backgroundColor: 'transparent', width: 140}}
+        style={{width: 130, backgroundColor: 'transparent', borderColor: 'transparent'}}
+        containerStyle={{backgroundColor: 'transparent', width: 130}}
         listItemLabelStyle={{color: 'white'}}
         listItemContainerStyle={{backgroundColor: '#292929'}}
         textStyle={{color: 'white'}}
       />
+      <Text style={styles.separator}>{SEPARATOR}</Text>
       <TextInput
         value={searchInputValue}
         onChangeText={(text: string) => {
           setSearchInputValue(text);
         }}
-        placeholder="Type to search"
+        placeholder="Type to search..."
         style={styles.searchInput}
         placeholderTextColor="lightgray"
       />
@@ -77,7 +78,7 @@ const SearchBarComponent = ({
 const styles = StyleSheet.create({
   headercontianer: {
     flexDirection: 'row',
-    height: 40,
+    height: 30,
     zIndex: 10000,
     backgroundColor: '#292929',
     marginHorizontal: 10,
@@ -92,9 +93,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     justifyContent: 'center',
     color: 'white',
+    fontSize: 12,
+    fontFamily: 'Verdana',
   },
   searchIcon: {
     right: 10,
+  },
+  separator: {
+    color: 'lightgray',
   },
 });
 
