@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {
   Dimensions,
   Pressable,
@@ -17,9 +17,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Image} from '@rneui/base';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {HeaderImage} from '../../assets/images';
-
-const CARD_WIDTH = 170;
-const CARD_HEIGHT = 85;
+import {type ResultItem} from './types/types';
+import {ListItem} from './components/list-item';
+import {DetailsModal} from './components/details-modal';
 
 const itemsList = [
   {label: 'Characters', value: 'character'},
@@ -45,15 +45,38 @@ const HomeComponent = (): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string>('character');
   const [searchInputValue, setSearchInputValue] = useState<string>('');
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [itemDetails, setItemDetails] = useState<ResultItem | null>(null);
+
+  const renderListItem = useCallback(
+    ({item}: {item: ResultItem}) => (
+      <ListItem
+        setModalVisible={setModalVisible}
+        item={item}
+        key={item.id}
+        setItemDetails={setItemDetails}
+      />
+    ),
+    [],
+  );
 
   return (
     <SafeAreaView>
+      <DetailsModal visible={modalVisible} setVisible={setModalVisible} itemDetails={itemDetails} />
       <View style={styles.container}>
         <View style={styles.topBarContainer}>
-          <Pressable style={styles.topBarButton}>
+          <Pressable
+            style={styles.topBarButton}
+            onPress={() => {
+              searchEpisodes('');
+            }}>
             <Text style={styles.topBarButtonText}>All episodes</Text>
           </Pressable>
-          <Pressable style={styles.topBarButton}>
+          <Pressable
+            style={styles.topBarButton}
+            onPress={() => {
+              searchLocations('');
+            }}>
             <Text style={styles.topBarButtonText}>All locations</Text>
           </Pressable>
         </View>
@@ -109,21 +132,7 @@ const HomeComponent = (): JSX.Element => {
           </Pressable>
         </View>
         <View>
-          <FlatGrid
-            data={results ?? []}
-            style={styles.gridView}
-            renderItem={({item}) => {
-              return (
-                <Pressable
-                  style={styles.itemContainer}
-                  onPress={() => {
-                    console.log(item.name);
-                  }}>
-                  <Text>Name: {item.name}</Text>
-                </Pressable>
-              );
-            }}
-          />
+          <FlatGrid data={results ?? []} style={styles.gridView} renderItem={renderListItem} />
         </View>
         <View style={{flexDirection: 'row'}}>
           <Button
@@ -160,15 +169,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: Dimensions.get('window').width,
     height: verticalScale(380),
-    // height: Dimensions.get('window').height - 200,
-  },
-  itemContainer: {
-    justifyContent: 'flex-end',
-    backgroundColor: 'gray',
-    borderRadius: 5,
-    padding: 10,
-    height: CARD_HEIGHT,
-    width: CARD_WIDTH,
+    backgroundColor: '#333333',
   },
   headercontianer: {
     flexDirection: 'row',
@@ -209,6 +210,45 @@ const styles = StyleSheet.create({
   footerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  // modal
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
   },
 });
 

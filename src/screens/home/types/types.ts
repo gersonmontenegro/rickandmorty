@@ -58,3 +58,18 @@ export interface Pagination {
   nextPage: string;
   prevPage: string;
 }
+
+export interface useListItemType {
+  firstSeen: string;
+}
+
+export interface DetailsModalProps {
+  itemDetails: ResultItem | null;
+  visible: boolean;
+  setVisible: (value: boolean) => void;
+}
+
+export interface DetailProps {
+  title: string;
+  description?: string;
+}
