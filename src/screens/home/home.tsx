@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {memo, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useSearchWithPagination} from './hooks/use-search-with-pagination';
@@ -30,8 +31,9 @@ const HomeComponent = (): JSX.Element => {
   const [itemDetails, setItemDetails] = useState<ResultItem | null>(null);
 
   useEffect(() => {
+    console.log('SEAR!');
     searchCharacters('');
-  }, [searchCharacters]);
+  }, []);
 
   return (
     <SafeAreaView>

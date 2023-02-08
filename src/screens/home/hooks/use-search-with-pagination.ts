@@ -49,6 +49,8 @@ const useSearchWithPagination = (): UseSearchWithPaginationType => {
   const setNewCurrentPage = (prevPage: number, nextPage: number): void => {
     if (prevPage === 0 && nextPage === 0) {
       setCurrentPage(1);
+    } else if (prevPage === -1) {
+      setCurrentPage(0);
     } else if (prevPage === 0 || isNaN(prevPage)) {
       setCurrentPage(1);
     } else if (nextPage === 0 || isNaN(nextPage)) {
@@ -81,25 +83,17 @@ const useSearchWithPagination = (): UseSearchWithPaginationType => {
             prevPage: results.info.prev,
           });
           setTotalPages(results.info.pages);
-        } else {
-          setTotalPages(0);
-          setPagination({
-            nextPage: '',
-            prevPage: '',
-          });
-          setSearchResults([]);
         }
         setLoading(false);
       })
       .catch((queryError) => {
-        setTotalPages(0);
+        setNewCurrentPage(-1, 0);
         setPagination({
           nextPage: '',
           prevPage: '',
         });
         setSearchResults([]);
-        setNewCurrentPage(0, 0);
-
+        setTotalPages(0);
         setError(queryError as string);
         setLoading(false);
       });
