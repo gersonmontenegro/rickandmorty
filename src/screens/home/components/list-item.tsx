@@ -5,7 +5,7 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import {scale, verticalScale} from 'react-native-size-matters';
-import {Helpers} from '../../../utils/Helpers';
+import {Helpers} from '@utils/Helpers';
 import {
   BULLET,
   CARD_HEIGHT,
@@ -13,11 +13,11 @@ import {
   GRADIENT_COLORS,
   GRADIENT_END,
   GRADIENT_START,
-} from '../../../utils/constants';
+} from '@utils/constants';
 import {type ResultItem} from '../types/types';
 import {CardDetail} from './card-detail';
 import {FirstSeen} from './first-seen';
-import {colors} from '../../../utils/colors';
+import {colors} from '@utils/colors';
 
 const ListItemComponent = ({
   item,

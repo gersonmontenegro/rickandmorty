@@ -4,8 +4,8 @@ import FastImage, {type Source} from 'react-native-fast-image';
 import {Text} from 'react-native-paper';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {Facebook, Instagram, Linkedin} from '../../../assets/images';
-import {colors} from '../../../utils/colors';
-import {BULLET} from '../../../utils/constants';
+import {colors} from '@utils/colors';
+import {BULLET} from '@utils/constants';
 
 interface FooterProps {
   locations: number;

@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
-import {Helpers} from '../../../utils/Helpers';
+import {Helpers} from '@utils/Helpers';
 import {
   type Pagination,
   type ResultItem,
@@ -13,7 +13,7 @@ import {
   EPISODES_URL,
   LOCATIONS_URL,
   SEARCH_ENDPOINT_TEMPLATE,
-} from '../../../utils/constants';
+} from '@utils/constants';
 
 const useSearchWithPagination = (): UseSearchWithPaginationType => {
   const [searchResults, setSearchResults] = useState<ResultItem[]>([]);

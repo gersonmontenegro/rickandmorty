@@ -1,6 +1,6 @@
 import {has} from 'lodash';
 import React, {memo, useMemo} from 'react';
-import {Helpers} from '../../../utils/Helpers';
+import {Helpers} from '@utils/Helpers';
 import {type CardDetailsProps, type ResultItem} from '../types/types';
 import {CharacterDetails} from './character-details';
 import {EpisodeDetails} from './episode-details';

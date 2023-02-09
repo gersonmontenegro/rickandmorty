@@ -6,11 +6,11 @@ import {scale, verticalScale} from 'react-native-size-matters';
 import {Hero} from '../../../assets/images';
 import {type DetailsModalProps} from '../types/types';
 import LinearGradient from 'react-native-linear-gradient';
-import {GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '../../../utils/constants';
+import {GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '@utils/constants';
 import {Text} from 'react-native-paper';
 import {CardDetails} from './card-details';
-import {Helpers} from '../../../utils/Helpers';
-import {colors} from '../../../utils/colors';
+import {Helpers} from '@utils/Helpers';
+import {colors} from '@utils/colors';
 
 const DetailsModalComponent = ({
   visible,

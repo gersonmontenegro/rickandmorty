@@ -2,7 +2,7 @@ import React, {memo, useCallback} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 import {verticalScale} from 'react-native-size-matters';
 import {FlatGrid} from 'react-native-super-grid';
-import {colors} from '../../../utils/colors';
+import {colors} from '@utils/colors';
 import {type ResultItem} from '../types/types';
 import {ListItem} from './list-item';
 
