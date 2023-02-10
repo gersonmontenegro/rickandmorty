@@ -14,7 +14,7 @@ export const useListItem = (endpoint: string): UseListItemType => {
         setFirstSeen(name as string);
       })
       .catch((queryError) => {
-        console.log(queryError);
+        console.error(queryError);
       });
   }, [endpoint]);
 
