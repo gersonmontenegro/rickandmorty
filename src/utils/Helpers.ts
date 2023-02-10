@@ -1,6 +1,9 @@
-import {has} from 'lodash';
 import {type Source} from 'react-native-fast-image';
-import {Morty, Rick} from '../assets/images';
+
+import {has} from 'lodash';
+
+import {Morty, Rick} from '@assets/images';
+
 import {type ResultItem} from '../screens/home/types/types';
 
 export const Helpers = {

@@ -1,5 +1,7 @@
-import axios from 'axios';
 import {useEffect, useState} from 'react';
+
+import axios from 'axios';
+
 import {type UseListItemType} from '../types/types';
 
 export const useListItem = (endpoint: string): UseListItemType => {

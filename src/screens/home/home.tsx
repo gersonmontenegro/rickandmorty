@@ -1,17 +1,18 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSearchWithPagination} from './hooks/use-search-with-pagination';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {type ResultItem} from './types/types';
+
+import {colors} from '@utils/colors';
+
 import {DetailsModal} from './components/details-modal';
-import {TopBar} from './components/top-bar';
+import {Footer} from './components/footer';
 import {Header} from './components/header';
+import {Pagination} from './components/pagination';
 import {SearchBar} from './components/search-bar';
 import {SearchResults} from './components/search-results';
-import {Pagination} from './components/pagination';
-import {Footer} from './components/footer';
-import {colors} from '@utils/colors';
+import {TopBar} from './components/top-bar';
+import {useSearchWithPagination} from './hooks/use-search-with-pagination';
+import {type ResultItem} from './types/types';
 
 const HomeComponent = (): JSX.Element => {
   const {
@@ -29,11 +30,6 @@ const HomeComponent = (): JSX.Element => {
   } = useSearchWithPagination();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [itemDetails, setItemDetails] = useState<ResultItem | null>(null);
-
-  useEffect(() => {
-    console.log('SEAR!');
-    searchCharacters('');
-  }, []);
 
   return (
     <SafeAreaView>

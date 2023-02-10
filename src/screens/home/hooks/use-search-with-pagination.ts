@@ -1,24 +1,29 @@
-import {useState, useEffect} from 'react';
-import axios from 'axios';
-import {Helpers} from '@utils/Helpers';
+import {useCallback, useEffect, useState} from 'react';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
+
+import axios, {type AxiosResponse} from 'axios';
+import {isNil} from 'lodash';
+
 import {
   type Pagination,
   type ResultItem,
   type Results,
   type UseSearchWithPaginationType,
-} from '../types/types';
+} from '@screens/home/types';
+import {Helpers} from '@utils/Helpers';
 import {
   CHARACTERS_URL,
-  Entities,
   EPISODES_URL,
+  Entities,
   LOCATIONS_URL,
+  Messages,
   SEARCH_ENDPOINT_TEMPLATE,
 } from '@utils/constants';
 
 const useSearchWithPagination = (): UseSearchWithPaginationType => {
   const [searchResults, setSearchResults] = useState<ResultItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [pagination, setPagination] = useState<Pagination>({nextPage: '', prevPage: ''});
   const [totalPages, setTotalPages] = useState<number>(0);
   const [entity, setEntity] = useState<string>('characters');
@@ -44,6 +49,8 @@ const useSearchWithPagination = (): UseSearchWithPaginationType => {
       const characteresInfo = characteresData.data as Results;
       setEpisodes(characteresInfo.info.count);
     });
+
+    searchCharacters('');
   }, []);
 
   const setNewCurrentPage = (prevPage: number, nextPage: number): void => {
@@ -60,44 +67,54 @@ const useSearchWithPagination = (): UseSearchWithPaginationType => {
     }
   };
 
+  const onSearchResponse = useCallback((response: AxiosResponse): void => {
+    const dataResponse = response.data as Results;
+    const {results, info} = dataResponse;
+
+    if (!isNil(results)) {
+      setSearchResults(results);
+      setNewCurrentPage(
+        Number(Helpers.getURLParams(info.prev).page) ?? 0,
+        Number(Helpers.getURLParams(info.next).page) ?? 0,
+      );
+      setPagination({
+        nextPage: info.next,
+        prevPage: info.prev,
+      });
+      setTotalPages(info.pages);
+    }
+  }, []);
+
+  const onSearchError = useCallback((): void => {
+    Toast.show({
+      type: 'info',
+      text1: Messages['no.results'],
+    });
+
+    setNewCurrentPage(-1, 0);
+    setPagination({
+      nextPage: '',
+      prevPage: '',
+    });
+    setSearchResults([]);
+    setTotalPages(0);
+
+    setError(Messages['no.results']);
+    setLoading(false);
+  }, []);
+
   useEffect(() => {
     setLoading(true);
-    setError(null);
+    setError('');
 
-    const endpoint = SEARCH_ENDPOINT_TEMPLATE.replace('%entity%', entity)
-      .replace('%query%', query)
-      .replace('%page%', page);
+    if (page !== '') {
+      const endpoint = SEARCH_ENDPOINT_TEMPLATE.replace('%entity%', entity)
+        .replace('%query%', query)
+        .replace('%page%', page);
 
-    void axios
-      .get(endpoint)
-      .then((response) => {
-        const results = response.data as Results;
-        if (results.results.length > 0) {
-          setSearchResults(results.results);
-          setNewCurrentPage(
-            Number(Helpers.getURLParams(results.info.prev).page) ?? 0,
-            Number(Helpers.getURLParams(results.info.next).page) ?? 0,
-          );
-          setPagination({
-            nextPage: results.info.next,
-            prevPage: results.info.prev,
-          });
-          setTotalPages(results.info.pages);
-        }
-        setLoading(false);
-      })
-      .catch((queryError) => {
-        setNewCurrentPage(-1, 0);
-        setPagination({
-          nextPage: '',
-          prevPage: '',
-        });
-        setSearchResults([]);
-        setTotalPages(0);
-        setError(queryError as string);
-        setLoading(false);
-      });
-  }, [entity, page, query]);
+      void axios.get(endpoint).then(onSearchResponse).catch(onSearchError);
+    }
+  }, [entity, onSearchError, onSearchResponse, page, query]);
 
   const handleNextPage = (): void => {
     const pageToGo = Helpers.getURLParams(pagination.nextPage).page;

@@ -37,7 +37,7 @@ export interface Results {
 export interface UseSearchWithPaginationType {
   results: ResultItem[];
   loading: boolean;
-  error: string | null;
+  error: string | undefined;
   handleNextPage: () => void;
   handlePrevPage: () => void;
   searchCharacters: (query: string) => void;
@@ -91,4 +91,13 @@ export interface Colors {
   shadowColor: string;
 
   whiteIcon: string;
+}
+
+export interface QueryError {
+  message: string;
+  name: string;
+  code: string;
+  config: string;
+  request: string;
+  response: string;
 }

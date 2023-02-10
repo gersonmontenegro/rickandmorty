@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import {isEmpty} from 'lodash';
 import React, {memo} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import {scale, verticalScale} from 'react-native-size-matters';
+
+import {isEmpty} from 'lodash';
+
 import {Helpers} from '@utils/Helpers';
+import {colors} from '@utils/colors';
 import {
   BULLET,
   CARD_HEIGHT,
@@ -14,10 +17,10 @@ import {
   GRADIENT_END,
   GRADIENT_START,
 } from '@utils/constants';
+
 import {type ResultItem} from '../types/types';
 import {CardDetail} from './card-detail';
 import {FirstSeen} from './first-seen';
-import {colors} from '@utils/colors';
 
 const ListItemComponent = ({
   item,
