@@ -1,9 +1,10 @@
 import React, {memo, useCallback, useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {Entities, itemsList, SEPARATOR} from '../../../utils/constants';
-import {colors} from '../../../utils/colors';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import {colors} from '@utils/colors';
+import {Entities, SEPARATOR, itemsList} from '@utils/constants';
 
 interface SearchBarProps {
   searchCharacters: (value: string) => void;

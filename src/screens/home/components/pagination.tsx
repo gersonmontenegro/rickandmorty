@@ -2,8 +2,9 @@ import React, {memo} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {scale, verticalScale} from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {colors} from '../../../utils/colors';
-import {SEPARATOR} from '../../../utils/constants';
+
+import {colors} from '@utils/colors';
+import {SEPARATOR} from '@utils/constants';
 
 interface PaginationProps {
   handleNextPage: () => void;

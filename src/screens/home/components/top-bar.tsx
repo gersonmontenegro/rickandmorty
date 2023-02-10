@@ -1,6 +1,7 @@
 import React, {memo} from 'react';
-import {Text, Pressable, View, StyleSheet} from 'react-native';
-import {colors} from '../../../utils/colors';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
+
+import {colors} from '@utils/colors';
 
 interface TopBarProps {
   searchEpisodes: (value: string) => void;

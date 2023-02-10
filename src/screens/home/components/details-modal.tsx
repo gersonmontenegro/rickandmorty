@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, {memo} from 'react';
-import {StyleSheet, Modal, View, ImageBackground} from 'react-native';
+import {ImageBackground, Modal, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {scale, verticalScale} from 'react-native-size-matters';
-import {Hero} from '../../../assets/images';
-import {type DetailsModalProps} from '../types/types';
 import LinearGradient from 'react-native-linear-gradient';
-import {GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '../../../utils/constants';
 import {Text} from 'react-native-paper';
+import {scale, verticalScale} from 'react-native-size-matters';
+
+import {Hero} from '@assets/images';
+import {Helpers} from '@utils/Helpers';
+import {colors} from '@utils/colors';
+import {GRADIENT_COLORS, GRADIENT_END, GRADIENT_START} from '@utils/constants';
+
+import {type DetailsModalProps} from '../types/types';
 import {CardDetails} from './card-details';
-import {Helpers} from '../../../utils/Helpers';
-import {colors} from '../../../utils/colors';
 
 const DetailsModalComponent = ({
   visible,

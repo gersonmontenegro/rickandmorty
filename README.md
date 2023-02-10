@@ -172,3 +172,10 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
  - v0.1.11. After checked the code, solve some issues, and use SonarQube to find flawless code and get 0 issues, this is the final version. Maybe is not perfect, and definitely I need more time to write more features (mentioned in the previous vervios), and solve the issue with pagination, but we're running out of time, so, is what it is.
 
 ![Final version](https://i.ibb.co/f47TJKt/final.gif)
+
+
+ - v0.1.12. Module resolver is added. No changes on app.
+
+ - v0.1.13. Add import order, solve init load, toast component.
+
+ - v0.1.14. Add useConnection hook to handle server connections.

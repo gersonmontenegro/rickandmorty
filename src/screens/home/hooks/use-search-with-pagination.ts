@@ -1,27 +1,33 @@
-import {useState, useEffect} from 'react';
-import axios from 'axios';
-import {Helpers} from '../../../utils/Helpers';
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import {useCallback, useEffect, useMemo, useState} from 'react';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
+
+import {isNil} from 'lodash';
+
 import {
   type Pagination,
   type ResultItem,
   type Results,
   type UseSearchWithPaginationType,
-} from '../types/types';
+} from '@screens/home/types';
+import {Helpers} from '@utils/Helpers';
 import {
   CHARACTERS_URL,
-  Entities,
   EPISODES_URL,
+  Entities,
   LOCATIONS_URL,
+  Messages,
   SEARCH_ENDPOINT_TEMPLATE,
-} from '../../../utils/constants';
+} from '@utils/constants';
+import {useConnection} from '@utils/hooks/use-connection';
 
 const useSearchWithPagination = (): UseSearchWithPaginationType => {
   const [searchResults, setSearchResults] = useState<ResultItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [pagination, setPagination] = useState<Pagination>({nextPage: '', prevPage: ''});
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [entity, setEntity] = useState<string>('characters');
+  const [entity, setEntity] = useState<string>(Entities.Character);
   const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -29,22 +35,68 @@ const useSearchWithPagination = (): UseSearchWithPaginationType => {
   const [characters, setCharacters] = useState<number>(0);
   const [episodes, setEpisodes] = useState<number>(0);
 
-  useEffect(() => {
-    void axios.get(LOCATIONS_URL).then((locationsData) => {
-      const locationInfo = locationsData.data as Results;
-      setLocations(locationInfo.info.count);
-    });
+  const {fetchData} = useConnection();
 
-    void axios.get(CHARACTERS_URL).then((episodesData) => {
-      const episodesInfo = episodesData.data as Results;
-      setCharacters(episodesInfo.info.count);
-    });
+  const onLocationsSuccess = (data: Results): void => {
+    setLocations(data.info.count);
+  };
 
-    void axios.get(EPISODES_URL).then((characteresData) => {
-      const characteresInfo = characteresData.data as Results;
-      setEpisodes(characteresInfo.info.count);
+  const onCharactersSuccess = (data: Results): void => {
+    setCharacters(data.info.count);
+  };
+
+  const onEpisodesSuccess = (data: Results): void => {
+    setEpisodes(data.info.count);
+  };
+
+  const onError = (): void => {
+    Toast.show({
+      type: 'info',
+      text1: Messages['no.results'],
     });
+  };
+
+  const setQueryAndPage = (queryParameter: string): void => {
+    setQuery(queryParameter);
+    setPage('0');
+  };
+
+  const searchCharacters = useCallback((queryParameter: string): void => {
+    setEntity(Entities.Character);
+    setQueryAndPage(queryParameter);
   }, []);
+
+  const searchEpisodes = (queryParameter: string): void => {
+    setEntity(Entities.Episode);
+    setQueryAndPage(queryParameter);
+  };
+
+  const searchLocations = (queryParameter: string): void => {
+    setEntity(Entities.Location);
+    setQueryAndPage(queryParameter);
+  };
+
+  useEffect(() => {
+    fetchData({
+      endpoint: LOCATIONS_URL,
+      onSuccess: onLocationsSuccess,
+      onError,
+    });
+
+    fetchData({
+      endpoint: CHARACTERS_URL,
+      onSuccess: onCharactersSuccess,
+      onError,
+    });
+
+    fetchData({
+      endpoint: EPISODES_URL,
+      onSuccess: onEpisodesSuccess,
+      onError,
+    });
+
+    searchCharacters('');
+  }, [fetchData, searchCharacters]);
 
   const setNewCurrentPage = (prevPage: number, nextPage: number): void => {
     if (prevPage === 0 && nextPage === 0) {
@@ -60,44 +112,61 @@ const useSearchWithPagination = (): UseSearchWithPaginationType => {
     }
   };
 
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
+  const onSearchResponse = useCallback((dataResponse: Results): void => {
+    const {results, info} = dataResponse;
 
-    const endpoint = SEARCH_ENDPOINT_TEMPLATE.replace('%entity%', entity)
+    if (!isNil(results)) {
+      setSearchResults(results);
+      setNewCurrentPage(
+        Number(Helpers.getURLParams(info.prev).page) ?? 0,
+        Number(Helpers.getURLParams(info.next).page) ?? 0,
+      );
+      setPagination({
+        nextPage: info.next,
+        prevPage: info.prev,
+      });
+      setTotalPages(info.pages);
+    }
+  }, []);
+
+  const onSearchError = useCallback((): void => {
+    Toast.show({
+      type: 'info',
+      text1: Messages['no.results'],
+    });
+
+    setNewCurrentPage(-1, 0);
+    setPagination({
+      nextPage: '',
+      prevPage: '',
+    });
+    setSearchResults([]);
+    setTotalPages(0);
+
+    setError(Messages['no.results']);
+    setLoading(false);
+  }, []);
+
+  const endpoint = useMemo(() => {
+    return SEARCH_ENDPOINT_TEMPLATE.replace('%entity%', entity)
       .replace('%query%', query)
       .replace('%page%', page);
-
-    void axios
-      .get(endpoint)
-      .then((response) => {
-        const results = response.data as Results;
-        if (results.results.length > 0) {
-          setSearchResults(results.results);
-          setNewCurrentPage(
-            Number(Helpers.getURLParams(results.info.prev).page) ?? 0,
-            Number(Helpers.getURLParams(results.info.next).page) ?? 0,
-          );
-          setPagination({
-            nextPage: results.info.next,
-            prevPage: results.info.prev,
-          });
-          setTotalPages(results.info.pages);
-        }
-        setLoading(false);
-      })
-      .catch((queryError) => {
-        setNewCurrentPage(-1, 0);
-        setPagination({
-          nextPage: '',
-          prevPage: '',
-        });
-        setSearchResults([]);
-        setTotalPages(0);
-        setError(queryError as string);
-        setLoading(false);
-      });
   }, [entity, page, query]);
+
+  const isPageValid = useMemo(() => page !== '', [page]);
+
+  useEffect(() => {
+    setLoading(true);
+    setError('');
+
+    if (isPageValid) {
+      fetchData({
+        endpoint,
+        onError: onSearchError,
+        onSuccess: onSearchResponse,
+      });
+    }
+  }, [endpoint, entity, fetchData, isPageValid, onSearchError, onSearchResponse, page, query]);
 
   const handleNextPage = (): void => {
     const pageToGo = Helpers.getURLParams(pagination.nextPage).page;
@@ -111,24 +180,6 @@ const useSearchWithPagination = (): UseSearchWithPaginationType => {
     if (pageToGo !== '') {
       setPage(pageToGo);
     }
-  };
-
-  const searchCharacters = (queryParameter: string): void => {
-    setEntity(Entities.Character);
-    setQuery(queryParameter);
-    setPage('0');
-  };
-
-  const searchEpisodes = (queryParameter: string): void => {
-    setEntity(Entities.Episode);
-    setQuery(queryParameter);
-    setPage('0');
-  };
-
-  const searchLocations = (queryParameter: string): void => {
-    setEntity(Entities.Location);
-    setQuery(queryParameter);
-    setPage('0');
   };
 
   return {

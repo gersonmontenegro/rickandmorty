@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
+
 import {Detail} from './detail';
 
 interface LocationDetailsProps {

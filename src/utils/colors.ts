@@ -1,4 +1,4 @@
-import {type Colors} from '../screens/home/types/types';
+import {type Colors} from '@screens/home/types/types';
 
 export const colors: Colors = {
   blackAbsolute: '#000000',

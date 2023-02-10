@@ -1,2 +1,2 @@
 export * from './home';
-export * from '../../utils/constants';
+export * from '@utils/constants';

@@ -1,6 +1,7 @@
 import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-paper';
+
 import {useListItem} from '../hooks/use-list-item';
 
 const FirstSeenComponent = ({urlEpisode}: {urlEpisode: string}): JSX.Element => {

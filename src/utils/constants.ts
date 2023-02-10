@@ -1,3 +1,5 @@
+import {type GenericObject} from '@utils/types';
+
 export const CARD_WIDTH = 180;
 export const CARD_HEIGHT = 90;
 
@@ -28,3 +30,7 @@ export const SEARCH_ENDPOINT_TEMPLATE =
 export const LOCATIONS_URL = 'https://rickandmortyapi.com/api/location';
 export const EPISODES_URL = 'https://rickandmortyapi.com/api/episode';
 export const CHARACTERS_URL = 'https://rickandmortyapi.com/api/character';
+
+export const Messages: GenericObject<string> = {
+  'no.results': 'No hay resultados en la búsqueda',
+};

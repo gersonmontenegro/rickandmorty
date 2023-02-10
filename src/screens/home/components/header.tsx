@@ -1,7 +1,8 @@
 import React from 'react';
-import {type ImageSourcePropType, Image, View, StyleSheet} from 'react-native';
+import {Image, type ImageSourcePropType, StyleSheet, View} from 'react-native';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-import {HeaderImage} from '../../../assets/images';
+
+import {HeaderImage} from '@assets/images';
 
 export const Header = (): JSX.Element => {
   return (

@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+
 import {type DetailProps} from '../types/types';
 
 const DetailComponent = ({title, description}: DetailProps): JSX.Element => {
