@@ -177,3 +177,5 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
  - v0.1.12. Module resolver is added. No changes on app.
 
  - v0.1.13. Add module resolver, import order, solve init load, toast component.
+
+ - v0.1.14. Add useConnection hook to handle server connections.
