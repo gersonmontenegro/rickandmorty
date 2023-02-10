@@ -179,3 +179,5 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
  - v0.1.13. Add import order, solve init load, toast component.
 
  - v0.1.14. Add useConnection hook to handle server connections.
+
+ - v0.1.15. Remove unused dependencies.
