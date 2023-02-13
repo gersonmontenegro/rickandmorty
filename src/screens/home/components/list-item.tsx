@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, {memo} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -7,6 +6,7 @@ import {scale, verticalScale} from 'react-native-size-matters';
 
 import {isEmpty} from 'lodash';
 
+import {useListItem} from '@screens/home/hooks/use-list-item';
 import {Helpers} from '@utils/Helpers';
 import {colors} from '@utils/colors';
 import {
@@ -31,8 +31,8 @@ const ListItemComponent = ({
   setItemDetails: (value: ResultItem) => void;
   setModalVisible: (value: boolean) => void;
 }): JSX.Element => {
-  // Show status details only if entity is character
-  const isCharacter = Helpers.isLocation(item) && Helpers.isEpisode(item);
+  const {firstSeen} = useListItem(item.id, Helpers.getFirstEpisode(item));
+
   return (
     <Pressable
       style={styles.itemContainer}
@@ -53,7 +53,8 @@ const ListItemComponent = ({
       <View style={styles.titlesContainer}>
         <View>
           <Text style={styles.characterName}>{item.name}</Text>
-          {isCharacter && (
+          {/* // Show status details only if entity is character */}
+          {Helpers.isCharacter(item) && (
             <View style={styles.statusContainer}>
               <Text style={styles.bullet}>{BULLET}</Text>
               <Text style={styles.status}>{`${item.status} - ${item.species}`}</Text>
@@ -63,9 +64,7 @@ const ListItemComponent = ({
         {!isEmpty(item.location) && (
           <CardDetail title="Las known location" description={item.location.name} />
         )}
-        {Array.isArray(item.episode) && (
-          <FirstSeen urlEpisode={item.episode[0] as string & any[]} />
-        )}
+        {Helpers.isCharacter(item) && <FirstSeen name={firstSeen} />}
       </View>
     </Pressable>
   );

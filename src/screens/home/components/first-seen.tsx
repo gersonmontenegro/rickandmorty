@@ -1,16 +1,17 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-paper';
 
-import {useListItem} from '../hooks/use-list-item';
+import {colors} from '@utils/colors';
 
-const FirstSeenComponent = ({urlEpisode}: {urlEpisode: string}): JSX.Element => {
-  const {firstSeen} = useListItem(urlEpisode);
-
+const FirstSeenComponent = ({name}: {name?: string}): JSX.Element => {
+  if (name === '') {
+    return <ActivityIndicator size="small" color={colors.primaryGray} />;
+  }
   return (
     <View>
       <Text style={styles.title}>First seen in</Text>
-      <Text style={styles.description}>{firstSeen}</Text>
+      <Text style={styles.description}>{name}</Text>
     </View>
   );
 };

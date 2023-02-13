@@ -181,3 +181,5 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
  - v0.1.14. Add useConnection hook to handle server connections.
 
  - v0.1.15. Remove unused dependencies.
+
+ - v0.2.0. Axios removed (hence useConnection removed), and replaced with React Query. Loaders added for search results, and getting first episode name.

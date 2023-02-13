@@ -1,5 +1,5 @@
 import React, {memo, useCallback} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {ActivityIndicator, Dimensions, StyleSheet, View} from 'react-native';
 import {verticalScale} from 'react-native-size-matters';
 import {FlatGrid} from 'react-native-super-grid';
 
@@ -12,12 +12,14 @@ interface SearchResultsProps {
   results: ResultItem[];
   setModalVisible: (value: boolean) => void;
   setItemDetails: (value: ResultItem | null) => void;
+  isLoading?: boolean;
 }
 
 const SearchResultsComponent = ({
   results,
   setItemDetails,
   setModalVisible,
+  isLoading = true,
 }: SearchResultsProps): JSX.Element => {
   const renderListItem = useCallback(
     ({item}: {item: ResultItem}) => (
@@ -31,6 +33,14 @@ const SearchResultsComponent = ({
     [setItemDetails, setModalVisible],
   );
 
+  if (isLoading) {
+    return (
+      <View style={StyleSheet.flatten([styles.gridView, styles.loader])}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
   return <FlatGrid data={results ?? []} style={styles.gridView} renderItem={renderListItem} />;
 };
 
@@ -40,6 +50,10 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: verticalScale(350),
     backgroundColor: colors.secondaryBackgroundGray,
+  },
+  loader: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

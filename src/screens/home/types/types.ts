@@ -1,7 +1,7 @@
 export interface ResultsInfo {
   count: number;
-  prev: string;
-  next: string;
+  prev?: string | null;
+  next?: string | null;
   pages: number;
 }
 
@@ -56,7 +56,7 @@ export interface Pagination {
 }
 
 export interface UseListItemType {
-  firstSeen: string;
+  firstSeen?: string;
 }
 
 export interface DetailsModalProps {
