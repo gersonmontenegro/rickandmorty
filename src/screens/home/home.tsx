@@ -2,6 +2,8 @@ import React, {memo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
+import {isEmpty} from 'lodash';
+
 import {colors} from '@utils/colors';
 
 import {DetailsModal} from './components/details-modal';
@@ -11,25 +13,25 @@ import {Pagination} from './components/pagination';
 import {SearchBar} from './components/search-bar';
 import {SearchResults} from './components/search-results';
 import {TopBar} from './components/top-bar';
-import {useSearchWithPagination} from './hooks/use-search-with-pagination';
+import {useQueryData} from './hooks/use-query-data';
+import {useQueryQuantities} from './hooks/use-query-quantities';
 import {type ResultItem} from './types/types';
 
 const HomeComponent = (): JSX.Element => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [itemDetails, setItemDetails] = useState<ResultItem | null>(null);
   const {
-    results,
-    handleNextPage,
-    handlePrevPage,
+    isLoading,
+    rqData,
+    onPressNextPage,
+    onPressPreviousPage,
+    totalPages,
+    currentPageNumber,
     searchCharacters,
     searchEpisodes,
     searchLocations,
-    totalPages,
-    currentPage,
-    locations,
-    episodes,
-    characters,
-  } = useSearchWithPagination();
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [itemDetails, setItemDetails] = useState<ResultItem | null>(null);
+  } = useQueryData();
+  const {data} = useQueryQuantities();
 
   return (
     <SafeAreaView>
@@ -43,18 +45,21 @@ const HomeComponent = (): JSX.Element => {
           searchLocations={searchLocations}
         />
         <SearchResults
-          results={results}
+          results={(!isEmpty(rqData) ? rqData : []) as ResultItem[]}
           setItemDetails={setItemDetails}
           setModalVisible={setModalVisible}
+          isLoading={isLoading}
         />
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          handleNextPage={handleNextPage}
-          handlePrevPage={handlePrevPage}
-        />
+        {currentPageNumber > 0 && (
+          <Pagination
+            currentPage={currentPageNumber}
+            totalPages={totalPages}
+            handleNextPage={onPressNextPage}
+            handlePrevPage={onPressPreviousPage}
+          />
+        )}
       </View>
-      <Footer locations={locations} characters={characters} episodes={episodes} />
+      <Footer locations={data?.locations} characters={data?.characters} episodes={data?.episodes} />
     </SafeAreaView>
   );
 };

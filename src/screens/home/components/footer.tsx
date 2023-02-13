@@ -4,19 +4,25 @@ import FastImage, {type Source} from 'react-native-fast-image';
 import {Text} from 'react-native-paper';
 import {scale, verticalScale} from 'react-native-size-matters';
 
+import {isUndefined} from 'lodash';
+
 import {Facebook, Instagram, Linkedin} from '@assets/images';
 import {colors} from '@utils/colors';
 import {BULLET} from '@utils/constants';
 
 interface FooterProps {
-  locations: number;
-  characters: number;
-  episodes: number;
+  locations?: number;
+  characters?: number;
+  episodes?: number;
 }
 
-const FooterComponent = ({locations, characters, episodes}: FooterProps): JSX.Element => {
+const FooterComponent = ({
+  locations = 0,
+  characters = 0,
+  episodes = 0,
+}: FooterProps): JSX.Element => {
   const isServerOn = useMemo(() => {
-    return !isNaN(locations);
+    return !isUndefined(locations) && !isNaN(locations);
   }, [locations]);
 
   const bulletIcon = useMemo(() => {

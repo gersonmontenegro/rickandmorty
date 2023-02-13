@@ -3,6 +3,8 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {scale, verticalScale} from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import {isUndefined} from 'lodash';
+
 import {colors} from '@utils/colors';
 import {SEPARATOR} from '@utils/constants';
 
@@ -10,7 +12,7 @@ interface PaginationProps {
   handleNextPage: () => void;
   handlePrevPage: () => void;
   currentPage: number;
-  totalPages: number;
+  totalPages?: number;
 }
 // TODO: Add page numbers, and allow user to select page size
 const PaginationComponent = ({
@@ -26,7 +28,9 @@ const PaginationComponent = ({
       </Pressable>
       <Text style={styles.separator}>{SEPARATOR}</Text>
       <View style={styles.pagesContainer}>
-        <Text style={styles.pageText}>{`${currentPage} / ${totalPages}`}</Text>
+        {!isUndefined(totalPages) && (
+          <Text style={styles.pageText}>{`${currentPage} / ${totalPages}`}</Text>
+        )}
       </View>
       <Text style={styles.separator}>{SEPARATOR}</Text>
       <Pressable style={styles.arrowButton} onPress={handleNextPage}>

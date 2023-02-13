@@ -1,24 +1,23 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
+import {useQuery} from 'react-query';
 
-import axios from 'axios';
+import {isUndefined} from 'lodash';
+
+import {Helpers} from '@utils/Helpers';
 
 import {type UseListItemType} from '../types/types';
 
-export const useListItem = (endpoint: string): UseListItemType => {
-  const [firstSeen, setFirstSeen] = useState<string>('');
-
-  useEffect(() => {
-    void axios
-      .get(endpoint)
-      .then(({data: {name}}) => {
-        setFirstSeen(name as string);
-      })
-      .catch((queryError) => {
-        console.error(queryError);
-      });
-  }, [endpoint]);
+export const useListItem = (id: number, endpoint?: string): UseListItemType => {
+  const [name, setName] = useState<string | undefined>('');
+  useQuery([`firstSeen-${id}`], async () => {
+    if (!isUndefined(endpoint)) {
+      const url = `${endpoint}?rnd=${Math.random()}`;
+      const firstSeenData = (await Helpers.fetchData(url)) as {name?: ''};
+      setName(firstSeenData.name);
+    }
+  });
 
   return {
-    firstSeen,
+    firstSeen: name,
   };
 };
