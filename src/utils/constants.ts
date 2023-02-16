@@ -1,7 +1,10 @@
 import {type GenericObject} from '@utils/types';
 
-export const CARD_WIDTH = 180;
-export const CARD_HEIGHT = 90;
+export const GRID_WIDTH = 350;
+export const GRID_HEIGHT = 350;
+
+export const CARD_WIDTH = 150;
+export const CARD_HEIGHT = 72;
 
 export const GRADIENT_START = {x: 0.6, y: 0.5};
 export const GRADIENT_END = {x: 1, y: 0.5};
@@ -33,4 +36,11 @@ export const CHARACTERS_URL = 'https://rickandmortyapi.com/api/character';
 
 export const Messages: GenericObject<string> = {
   'no.results': 'No hay resultados en la búsqueda',
+  'type.to.search': 'Type to search...',
 };
+
+export const MAX_COLUMNS_PER_ROW = 2;
+export const SEARCH_HEIGHT = 30;
+export const DROPDOWN_WIDTH = 130;
+export const GRADIENT_WIDTH = '100%';
+export const GRADIENT_HEIGHT = '100%';
