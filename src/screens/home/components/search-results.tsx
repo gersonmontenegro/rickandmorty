@@ -1,10 +1,11 @@
 import React, {memo, useCallback} from 'react';
-import {ActivityIndicator, Dimensions, StyleSheet, View} from 'react-native';
-import {verticalScale} from 'react-native-size-matters';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {scale, verticalScale} from 'react-native-size-matters';
 import {FlatGrid} from 'react-native-super-grid';
 
 import {colors} from '@utils/colors';
 
+import {GRID_HEIGHT, GRID_WIDTH, MAX_COLUMNS_PER_ROW} from '..';
 import {type ResultItem} from '../types/types';
 import {ListItem} from './list-item';
 
@@ -41,15 +42,27 @@ const SearchResultsComponent = ({
     );
   }
 
-  return <FlatGrid data={results ?? []} style={styles.gridView} renderItem={renderListItem} />;
+  return (
+    <FlatGrid
+      maxItemsPerRow={MAX_COLUMNS_PER_ROW}
+      data={results ?? []}
+      style={styles.gridView}
+      renderItem={renderListItem}
+      adjustGridToStyles
+      itemContainerStyle={styles.itemContainer}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
   gridView: {
     marginTop: 10,
-    width: Dimensions.get('window').width,
-    height: verticalScale(350),
+    width: scale(GRID_WIDTH),
+    height: verticalScale(GRID_HEIGHT),
     backgroundColor: colors.secondaryBackgroundGray,
+  },
+  itemContainer: {
+    alignItems: 'center',
   },
   loader: {
     justifyContent: 'center',
