@@ -4,7 +4,14 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {colors} from '@utils/colors';
-import {Entities, SEPARATOR, itemsList} from '@utils/constants';
+import {
+  DROPDOWN_WIDTH,
+  Entities,
+  Messages,
+  SEARCH_HEIGHT,
+  SEPARATOR,
+  itemsList,
+} from '@utils/constants';
 
 interface SearchBarProps {
   searchCharacters: (value: string) => void;
@@ -42,7 +49,7 @@ const SearchBarComponent = ({
   }, [searchCharacters, searchEpisodes, searchInputValue, searchLocations, value]);
 
   return (
-    <View style={styles.headercontianer}>
+    <View style={styles.searchHeaderContaianer}>
       <DropDownPicker
         open={open}
         value={value}
@@ -61,7 +68,7 @@ const SearchBarComponent = ({
         onChangeText={(text: string) => {
           setSearchInputValue(text);
         }}
-        placeholder="Type to search..."
+        placeholder={Messages['type.to.search']}
         style={styles.searchInput}
         placeholderTextColor="lightgray"
       />
@@ -73,9 +80,9 @@ const SearchBarComponent = ({
 };
 
 const styles = StyleSheet.create({
-  headercontianer: {
+  searchHeaderContaianer: {
     flexDirection: 'row',
-    height: 30,
+    height: SEARCH_HEIGHT,
     zIndex: 10000,
     backgroundColor: colors.backgroundGray,
     marginHorizontal: 10,
@@ -86,7 +93,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    height: 30,
+    height: SEARCH_HEIGHT,
     marginHorizontal: 10,
     justifyContent: 'center',
     color: colors.whiteAbsolute,
@@ -109,13 +116,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundGray,
   },
   dropdown: {
-    width: 130,
+    width: DROPDOWN_WIDTH,
     backgroundColor: 'transparent',
     borderColor: 'transparent',
   },
   containerStyle: {
     backgroundColor: 'transparent',
-    width: 130,
+    width: DROPDOWN_WIDTH,
   },
 });
 

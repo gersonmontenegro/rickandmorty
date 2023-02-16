@@ -15,7 +15,9 @@ import {
   CARD_WIDTH,
   GRADIENT_COLORS,
   GRADIENT_END,
+  GRADIENT_HEIGHT,
   GRADIENT_START,
+  GRADIENT_WIDTH,
 } from '@utils/constants';
 
 import {type ResultItem} from '../types/types';
@@ -76,8 +78,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.whiteAbsolute,
     flexDirection: 'row',
     borderRadius: 5,
-    height: CARD_HEIGHT,
-    width: CARD_WIDTH,
+    height: verticalScale(CARD_HEIGHT),
+    width: scale(CARD_WIDTH),
     shadowColor: colors.whiteAbsolute,
     shadowOffset: {
       width: 3,
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: scale(50),
-    height: verticalScale(72),
+    height: verticalScale(CARD_HEIGHT),
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,
   },
@@ -133,8 +135,8 @@ const styles = StyleSheet.create({
     height: 10,
   },
   gradient: {
-    height: '100%',
-    width: '100%',
+    height: GRADIENT_WIDTH,
+    width: GRADIENT_HEIGHT,
   },
 });
 

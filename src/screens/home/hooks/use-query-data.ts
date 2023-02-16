@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import {useCallback, useState} from 'react';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {useQuery} from 'react-query';
 
 import {has} from 'lodash';
 
 import {type QueryError, type Results} from '@screens/home/types';
 import {Helpers} from '@utils/Helpers';
-import {Entities} from '@utils/constants';
+import {Entities, Messages} from '@utils/constants';
 import {type GenericFunction} from '@utils/types';
 
 interface IQueryDataProps {
@@ -95,6 +96,13 @@ export const useQueryData = (): IQueryDataProps => {
     }
     return 0;
   };
+
+  if (!has(data, 'results')) {
+    Toast.show({
+      type: 'info',
+      text1: Messages['no.results'],
+    });
+  }
 
   return {
     rqData: data?.results,
