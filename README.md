@@ -183,3 +183,8 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
  - v0.1.15. Remove unused dependencies.
 
  - v0.2.0. Axios removed (hence useConnection removed), and replaced with React Query. Loaders added for search results, and getting first episode name.
+
+ - v0.2.1. Remove magic numbers, fix responsive grid, add flipper libraries.
+
+ - v0.2.2. Reverse magic numbers, and responsive grid. Add flipper libraries.
+
