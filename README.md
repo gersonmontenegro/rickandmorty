@@ -187,4 +187,5 @@ Tools like linters, and alias resolver could help a lot. Also to define codifica
  - v0.2.1. Remove magic numbers, fix responsive grid, add flipper libraries.
 
  - v0.2.2. Reverse magic numbers, and responsive grid. Add flipper libraries.
+![Performance](https://i.ibb.co/TmmhvV3/performance.png)
 
